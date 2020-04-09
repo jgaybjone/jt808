@@ -1,0 +1,53 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: jt808-server
+
+  profiles:
+    active: dev
+
+  jackson:
+    serialization:                        #null字段自动忽略
+      indent_output: true                 #格式化打印json字符串
+      fail_on_empty_beans: false          #循环依赖自动拆开
+      write_dates_as_timestamps: true
+    default-property-inclusion: non_null  #null输出忽略
+    deserialization:
+      fail_on_unknown_properties: false
+
+  datasource:
+    url: jdbc:postgresql://121.40.163.240:5432/postgres
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: timescaledb
+    hikari:
+      maximum-pool-size: 50
+      leak-detection-threshold: 16000
+      connection-timeout: 30000
+      idle-timeout: 25000
+      minimum-idle: 5
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  redis:
+    host: 121.40.163.240
+    port: 26379
+    password: easy@2019
+    lettuce:
+      pool:
+        max-idle: 50
+        min-idle: 1
+        max-active: 200
+        max-wait: 1000ms
+
+  rabbitmq:
+    host: 121.40.163.240
+    port: 5673
+    username: admin
+    password: L2FRxaeVJf35JkLP
+
+logging:
+  config: classpath:log4j2-dev.xml
