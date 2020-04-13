@@ -25,4 +25,8 @@ public class ApplicationContextUtils implements ApplicationContextAware {
         CTX.publishEvent(event);
     }
 
+    public static <T> T getBean(Class<T> tClass) {
+        return CTX.getBean(tClass);
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.avenger.jt808.util;
 
+import io.netty.buffer.ByteBuf;
 import lombok.experimental.UtilityClass;
 import org.springframework.util.StringUtils;
 
@@ -18,6 +19,12 @@ public class ByteArrayUtils {
             bcd.append(String.format("%02X", aByte));
         }
         return bcd.toString();
+    }
+
+    public static String toBcdString(ByteBuf buf, int len) {
+        final byte[] bytes = new byte[len];
+        buf.readBytes(bytes);
+        return toBcdString(bytes);
     }
 
     public static byte[] bcdStrToBytes(String bcd) {

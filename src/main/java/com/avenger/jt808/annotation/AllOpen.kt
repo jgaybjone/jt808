@@ -18,3 +18,5 @@ annotation class ReadingMessageType(val type: Short)
 
 
 annotation class WritingMessageType(val type: Short)
+
+annotation class AdditionalAble(val type: Byte)
