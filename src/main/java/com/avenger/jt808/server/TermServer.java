@@ -1,10 +1,8 @@
 package com.avenger.jt808.server;
 
-import com.avenger.jt808.base.Message;
 import com.avenger.jt808.base.MessageFactory;
+import com.avenger.jt808.base.MessageHandlerManager;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -22,10 +20,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 /**
  * Created by jg.wang on 2020/4/9.
@@ -41,6 +36,8 @@ public class TermServer {
 
     @NonNull
     private final MessageFactory messageFactory;
+    @NonNull
+    private final MessageHandlerManager messageHandlerManager;
 
     EventLoopGroup bossGroup;
     EventLoopGroup workerGroup;
@@ -64,7 +61,7 @@ public class TermServer {
                             //超过20分钟未收到客户端消息则自动断开客户端连接
                             ch.pipeline().addLast("idleStateHandler", new IdleStateHandler(20, 0, 0, TimeUnit.MINUTES));
                             ch.pipeline().addLast("decoder", new MessageDecoder(messageFactory));
-                            ch.pipeline().addLast(new MessageHandler());
+                            ch.pipeline().addLast(new SimpleChannelMessageHandler(messageHandlerManager));
                             ch.pipeline().addLast(new MessageEncoder());
                             ch.pipeline().addLast("encoder", new ByteArrayEncoder());
                             //handler.setConnctionMap(connctionMap);
