@@ -79,7 +79,7 @@ public class SettingDetailMsg implements Body {
     public static List<SettingParams> params(ByteBuf byteBuf) {
         final byte size = byteBuf.readByte();
         List<SettingParams> params = new ArrayList<>();
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < size && byteBuf.isReadable(); i++) {
             final int id = byteBuf.readInt();
             final byte len = byteBuf.readByte();
             SettingParams p;
@@ -97,7 +97,9 @@ public class SettingDetailMsg implements Body {
                     p = new LongSettingParams(id, byteBuf.readLong());
                     break;
                 default:
-                    throw new IllegalArgumentException("不支持的参数长度" + len);
+                    final byte[] bytes = new byte[len];
+                    byteBuf.readBytes(bytes);
+                    p = new StringSettingParams(id, new String(bytes, Charset.forName("GBK")).trim());
             }
             params.add(p);
         }
