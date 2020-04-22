@@ -42,8 +42,8 @@ public class CircularRegionSettingMsg implements Body {
                     .writeInt(circularRegion.getCenterLatitude())
                     .writeInt(circularRegion.getCenterLongitude())
                     .writeInt(circularRegion.getRadius())
-                    .writeBytes(ByteArrayUtils.bcdStrToBytes(DateUtil.toStringByFormat(circularRegion.getStartTime(), "YY-MM-DD-hh-mm-ss")))
-                    .writeBytes(ByteArrayUtils.bcdStrToBytes(DateUtil.toStringByFormat(circularRegion.getEndTime(), "YY-MM-DD-hh-mm-ss")))
+                    .writeBytes(ByteArrayUtils.bcdStrToBytes(DateUtil.toStringByFormat(circularRegion.getStartTime(), "yy-MM-dd-HH-mm-ss")))
+                    .writeBytes(ByteArrayUtils.bcdStrToBytes(DateUtil.toStringByFormat(circularRegion.getEndTime(), "yy-MM-dd-HH-mm-ss")))
                     .writeShort(circularRegion.getSpeedLimit())
                     .writeByte(circularRegion.getOverSpeedDuration());
 

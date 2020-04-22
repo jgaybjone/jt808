@@ -1,12 +1,15 @@
 package com.avenger.jt808.base.pbody;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 /**
  * Created by jg.wang on 2020/4/10.
  * Description:
  */
+@SuppressWarnings("FieldMayBeFinal")
 @AllArgsConstructor
+@Getter
 public class AlarmDetail {
 
     private int alarmFlag = 0;

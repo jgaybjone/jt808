@@ -60,6 +60,10 @@ public class SettingDetailMsg implements Body {
             } else if (Long.class.isAssignableFrom(p.getRealType())) {
                 buffer.writeByte(8);
                 buffer.writeLong(((Long) p.getParam()));
+            } else if (byte[].class.isAssignableFrom(p.getRealType())) {
+                final byte[] param = (byte[]) p.getParam();
+                buffer.writeByte(param.length);
+                buffer.writeBytes(param);
             } else {
                 throw new IllegalArgumentException("参数类型不合法:" + p.getRealType().getName());
             }

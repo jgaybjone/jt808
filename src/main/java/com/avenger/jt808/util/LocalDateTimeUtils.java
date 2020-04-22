@@ -159,6 +159,10 @@ public class LocalDateTimeUtils {
                 .withNano(999999999);
     }
 
+    public static LocalDateTime parse(String format, String date) {
+        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+        return LocalDateTime.parse(date, formatter);
+    }
 
 
 }

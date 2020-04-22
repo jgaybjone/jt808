@@ -5,6 +5,7 @@ import lombok.experimental.UtilityClass;
 import org.springframework.util.StringUtils;
 
 import java.nio.ByteBuffer;
+import java.time.LocalDateTime;
 
 /**
  * Created by jg.wang on 2020/4/9.
@@ -25,6 +26,17 @@ public class ByteArrayUtils {
         final byte[] bytes = new byte[len];
         buf.readBytes(bytes);
         return toBcdString(bytes);
+    }
+
+    public static LocalDateTime bcdToDate(ByteBuf buf, int len) {
+        final byte[] bytes = new byte[len];
+        buf.readBytes(bytes);
+        final String s = "20" + toBcdString(bytes);
+        final String str = s.replace("-", "").replace(":", "");
+        if (str.length() == 8) {
+            return LocalDateTimeUtils.parse("yyyyMMdd", str);
+        }
+        return LocalDateTimeUtils.parse("yyyyMMddHHmmss", str);
     }
 
     public static byte[] bcdStrToBytes(String bcd) {

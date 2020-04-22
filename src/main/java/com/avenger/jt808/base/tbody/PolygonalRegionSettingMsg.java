@@ -63,8 +63,8 @@ public class PolygonalRegionSettingMsg implements Body {
                 .writeInt(this.id)
                 .writeShort(this.type)
                 .writeByte(coordinates.size())
-                .writeBytes(ByteArrayUtils.bcdStrToBytes(DateUtil.toStringByFormat(this.getStartTime(), "YY-MM-DD-hh-mm-ss")))
-                .writeBytes(ByteArrayUtils.bcdStrToBytes(DateUtil.toStringByFormat(this.getEndTime(), "YY-MM-DD-hh-mm-ss")))
+                .writeBytes(ByteArrayUtils.bcdStrToBytes(DateUtil.toStringByFormat(this.getStartTime(), "yy-MM-dd-HH-mm-ss")))
+                .writeBytes(ByteArrayUtils.bcdStrToBytes(DateUtil.toStringByFormat(this.getEndTime(), "yy-MM-dd-HH-mm-ss")))
                 .writeShort(this.getSpeedLimit())
                 .writeByte(this.getOverSpeedDuration())
                 .writeShort(coordinates.size());

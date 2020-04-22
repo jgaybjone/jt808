@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * Created by jg.wang on 2020/4/13.
- * Description:
+ * Description: 多媒体数据上传应答
  */
 @WritingMessageType(type = ((byte) 0x8800))
 @Data

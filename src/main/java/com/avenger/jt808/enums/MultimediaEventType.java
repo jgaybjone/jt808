@@ -9,8 +9,8 @@ import java.util.Arrays;
  */
 public enum MultimediaEventType {
     PICTURE,
-    VIDEO,
-    AUDIO;
+    AUDIO,
+    VIDEO;
 
     public static MultimediaEventType valueOf(byte value) {
         return Arrays.stream(values())

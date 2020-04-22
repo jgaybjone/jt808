@@ -34,7 +34,7 @@ public class TermServer {
     private int termPort;
 
     @NonNull
-    private MessageFactory messageFactory;
+    private final MessageFactory messageFactory;
 
     EventLoopGroup bossGroup;
     EventLoopGroup workerGroup;

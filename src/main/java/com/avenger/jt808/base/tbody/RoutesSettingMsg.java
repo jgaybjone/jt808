@@ -79,8 +79,8 @@ public class RoutesSettingMsg implements Body {
     public byte[] serialize() {
         final ByteBuf byteBuf = Unpooled.buffer(500).writeInt(id)
                 .writeShort(this.lineAttribute)
-                .writeBytes(ByteArrayUtils.bcdStrToBytes(DateUtil.toStringByFormat(this.getStartTime(), "YY-MM-DD-hh-mm-ss")))
-                .writeBytes(ByteArrayUtils.bcdStrToBytes(DateUtil.toStringByFormat(this.getEndTime(), "YY-MM-DD-hh-mm-ss")))
+                .writeBytes(ByteArrayUtils.bcdStrToBytes(DateUtil.toStringByFormat(this.getStartTime(), "yy-MM-dd-HH-mm-ss")))
+                .writeBytes(ByteArrayUtils.bcdStrToBytes(DateUtil.toStringByFormat(this.getEndTime(), "yy-MM-dd-HH-mm-ss")))
                 .writeShort(inflectionPoints.size());
         if (!CollectionUtils.isEmpty(inflectionPoints)) {
             inflectionPoints.forEach(point -> {

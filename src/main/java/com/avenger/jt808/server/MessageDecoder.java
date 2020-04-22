@@ -47,13 +47,28 @@ public class MessageDecoder extends ReplayingDecoder<Void> {
             }
         }
         final Message message = messageFactory.create(buffer);
+        message.setVerified(this.check(buffer.resetReaderIndex()));
         out.add(message);
 
+
+    }
+
+
+    private boolean check(ByteBuf byteBuf) {
+        final int len = byteBuf.readableBytes();
+        int check = 0;
+        for (int i = 0; i < len - 2; i++) {
+            check = check ^ byteBuf.readByte();
+        }
+        return byteBuf.readByte() == check;
     }
 
 //    public static void main(String[] args) {
 //        final ByteBuf buffer = Unpooled.buffer(1);
 //        buffer.writeByte(0x7e);
+//        buffer.writeByte(89);
+//        buffer.writeByte(88);
+//        System.out.println(buffer.readByte());
 //        final byte[] array = buffer.array();
 //        System.out.println(array);
 //    }
