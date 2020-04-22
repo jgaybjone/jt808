@@ -114,6 +114,10 @@ public class MessageFactory implements ApplicationContextAware {
         final Message message = new Message();
         message.setHeader(header);
         message.setMsgBody(body);
+        if (log.isDebugEnabled()) {
+            log.debug("消息解析成功，消息类型：{}" +
+                    "\n>>>>>>>>>>>>>detail: {}", Integer.toHexString(header.getId()), message.toString());
+        }
         return message;
     }
 

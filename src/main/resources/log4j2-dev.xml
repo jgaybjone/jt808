@@ -48,6 +48,8 @@
                      level="debug"/>
         <AsyncLogger name="org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener"
                      level="info"/>
+        <AsyncLogger name="com.avenger.jt808.base"
+                     level="debug"/>
         <!--        <AsyncLogger name="com.glp.fsp.interfaces.filter.PayloadLoggingFilter" level="debug">-->
         <!--            <AppenderRef ref="payloadLog"/>-->
         <!--        </AsyncLogger>-->
