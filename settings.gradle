@@ -1,1 +1,3 @@
-rootProject.name = 'jt808-server'
+rootProject.name = 'jt808'
+include 'server'
+include 'core-domain'

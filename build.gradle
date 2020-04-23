@@ -1,80 +1,20 @@
 plugins {
-    id 'org.springframework.boot' version '2.2.6.RELEASE'
-    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
-    id 'org.jetbrains.kotlin.plugin.spring' version '1.3.71'
-    id "org.jetbrains.kotlin.plugin.allopen" version "1.3.71"
-    id "org.jetbrains.kotlin.plugin.noarg" version "1.3.71"
     id 'java'
-    id 'org.jetbrains.kotlin.jvm' version '1.3.71'
 }
 
-group = 'com.avenger'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.8'
-test.enabled = false
-
-configurations {
-    all*.exclude group: "commons-logging", module: "commons-logging"
-    all*.exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
-    all*.exclude group: "org.antlr", module: "antlr4-annotations"
-    compileOnly {
-        extendsFrom annotationProcessor
+allprojects {
+    repositories {
+        maven { url "https://plugins.gradle.org/m2/" }
+        maven { url "https://maven.aliyun.com/repository/jcenter" }
+        maven { url "https://maven.aliyun.com/repository/gradle-plugin" }
+        maven { url "https://repo.spring.io/libs-milestone" }
+        maven { url "https://maven.aliyun.com/repository/public" }
+        mavenCentral()
     }
+
+    group = 'com.avenger'
+    version = '0.0.1-SNAPSHOT'
+    sourceCompatibility = '1.8'
+    test.enabled = false
 }
 
-repositories {
-    maven { url "https://plugins.gradle.org/m2/" }
-    maven { url "https://maven.aliyun.com/repository/jcenter" }
-    maven { url "https://maven.aliyun.com/repository/gradle-plugin" }
-    maven { url "https://repo.spring.io/libs-milestone" }
-    maven { url "https://maven.aliyun.com/repository/public" }
-    mavenCentral()
-}
-
-dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    implementation 'org.springframework.boot:spring-boot-starter-amqp'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis-reactive'
-    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
-    //异步日志
-    implementation 'com.lmax:disruptor:3.4.2'
-    implementation 'org.springframework.boot:spring-boot-starter-rsocket'
-    implementation 'org.hibernate.validator:hibernate-validator:6.1.2.Final'
-    implementation group: 'org.apache.commons', name: 'commons-pool2', version: '2.6.0'
-    compileOnly 'org.projectlombok:lombok'
-    runtimeOnly 'org.postgresql:postgresql'
-    annotationProcessor 'org.projectlombok:lombok'
-    testImplementation('org.springframework.boot:spring-boot-starter-test') {
-        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-    }
-    testImplementation 'io.projectreactor:reactor-test'
-    testImplementation 'org.springframework.amqp:spring-rabbit-test'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-}
-
-compileKotlin {
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-}
-compileTestKotlin {
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-}
-
-//这里进行noArg的配置
-noArg {
-    //配置路径就是咱们先开始定义的那个注解类
-    annotation("com.avenger.jt808.annotation.NoArg")
-}
-//这里进行allOpen的配置
-allOpen {
-    //配置路径就是咱们先开始定义的那个注解类
-    annotation("com.avenger.jt808.annotation.AllOpen")
-}
-
-test {
-    useJUnitPlatform()
-}
