@@ -3,7 +3,6 @@ package com.avenger.jt808;
 import com.avenger.jt808.domain.AlarmIdentification;
 import com.avenger.jt808.domain.Body;
 import com.avenger.jt808.domain.ReadingMessageType;
-import com.avenger.jt808.domain.WritingMessageType;
 import com.avenger.jt808.util.ByteArrayUtils;
 import com.avenger.jt808.util.ByteBufUtils;
 import io.netty.buffer.ByteBuf;

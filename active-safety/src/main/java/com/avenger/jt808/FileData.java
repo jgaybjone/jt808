@@ -9,6 +9,6 @@ import lombok.Data;
 @Data
 public class FileData {
     private String fileName;
-    private int offset;
+    private long offset;
     private byte[] data;
 }

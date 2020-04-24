@@ -2,9 +2,11 @@ package com.avenger.jt808.domain;
 
 import com.avenger.jt808.util.BinaryUtils;
 import com.avenger.jt808.util.ByteArrayUtils;
+import com.avenger.jt808.util.SerialNoUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Created by jg.wang on 2020/4/9.
@@ -15,6 +17,7 @@ public class Header {
     /**
      * 消息类型
      */
+    @Setter
     private short id;
 
     /**
@@ -76,6 +79,39 @@ public class Header {
         this.id = id;
         this.simNo = simNo;
         this.serialNo = serialNo;
+        this.msgInf = 0;
+        if (packet) {
+            msgInf |= 0x2000;
+        } else {
+            msgInf &= 0xDFFF;
+        }
+        if (encryptionForm == EncryptionForm.RSA) {
+            msgInf |= 0x400;
+        } else {
+            msgInf &= 0xE3FF;
+        }
+    }
+
+    public Header(short id, String simNo, boolean packet, EncryptionForm encryptionForm) {
+        this.id = id;
+        this.simNo = simNo;
+        this.serialNo = SerialNoUtils.next();
+        this.msgInf = 0;
+        if (packet) {
+            msgInf |= 0x2000;
+        } else {
+            msgInf &= 0xDFFF;
+        }
+        if (encryptionForm == EncryptionForm.RSA) {
+            msgInf |= 0x400;
+        } else {
+            msgInf &= 0xE3FF;
+        }
+    }
+
+    public Header(String simNo, boolean packet, EncryptionForm encryptionForm) {
+        this.simNo = simNo;
+        this.serialNo = SerialNoUtils.next();
         this.msgInf = 0;
         if (packet) {
             msgInf |= 0x2000;

@@ -1,4 +1,5 @@
 plugins {
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
     id 'java'
 }
 
@@ -10,10 +11,25 @@ configurations {
 
 dependencies {
     implementation project(':core-domain')
-    implementation 'io.netty:netty-buffer:4.1.48.Final'
+    implementation 'io.vertx:vertx-rabbitmq-client:3.9.0'
+//    implementation 'io.netty:netty-buffer:4.1.48.Final'
     implementation 'org.slf4j:slf4j-api:1.7.30'
+    implementation 'io.projectreactor:reactor-core:3.3.4.RELEASE'
     implementation 'org.springframework:spring-core:5.2.5.RELEASE'
+    implementation group: 'commons-io', name: 'commons-io', version: '2.6'
+    implementation 'org.apache.logging.log4j:log4j-api:2.12.1'
+    implementation 'org.apache.logging.log4j:log4j-core:2.12.1'
+    implementation 'org.apache.logging.log4j:log4j-slf4j-impl:2.12.1'
+    implementation 'org.apache.logging.log4j:log4j-jcl:2.12.1'
+    //异步日志
+    implementation 'com.lmax:disruptor:3.4.2'
     compileOnly 'org.projectlombok:lombok:1.18.12'
     annotationProcessor 'org.projectlombok:lombok:1.18.12'
     testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+shadowJar {
+    manifest {
+        attributes "Main-Class": 'com.avenger.jt808.server.TermServer'
+    }
 }

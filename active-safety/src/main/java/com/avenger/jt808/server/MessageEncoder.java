@@ -17,9 +17,9 @@ public class MessageEncoder extends MessageToByteEncoder<Message> {
     protected void encode(ChannelHandlerContext ctx, Message msg, ByteBuf out) throws Exception {
         final ByteBuf buffer = Unpooled.buffer(200);
         final Header header = msg.getHeader();
-        final byte[] b = msg.getMsgBody().serialize();
         final WritingMessageType type = msg.getMsgBody().getClass().getAnnotation(WritingMessageType.class);
         header.setId(type.type());
+        final byte[] b = msg.getMsgBody().serialize();
         buffer.writeBytes(header.getRaw((byte) b.length));
         buffer.writeBytes(b);
         while (buffer.isReadable()) {

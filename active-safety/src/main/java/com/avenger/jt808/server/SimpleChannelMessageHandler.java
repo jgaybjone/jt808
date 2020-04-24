@@ -26,7 +26,6 @@ public class SimpleChannelMessageHandler extends SimpleChannelInboundHandler<Mes
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Message msg) throws Exception {
         final Channel channel = ctx.channel();
-        TermConnManager.addConn(msg.getHeader().getSimNo(), channel);
         final Publisher<Message> process = messageHandlerManager.process(msg);
         Consumer<Message> consumer = m -> {
             if (channel.isActive()) {
@@ -49,13 +48,11 @@ public class SimpleChannelMessageHandler extends SimpleChannelInboundHandler<Mes
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         super.channelInactive(ctx);
-        TermConnManager.connBreak(ctx.channel());
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         super.exceptionCaught(ctx, cause);
-        final String simNo = TermConnManager.simNoOnChannel(ctx.channel());
-        log.error("客户端" + simNo + "连接异常", cause);
+        log.error("客户端连接异常", cause);
     }
 }
