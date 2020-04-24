@@ -1,6 +1,6 @@
 package com.avenger.jt808.base.pbody;
 
-import com.avenger.jt808.base.annotation.AdditionalAble;
+import com.avenger.jt808.domain.AdditionalAble;
 
 /**
  * Created by jg.wang on 2020/4/17.

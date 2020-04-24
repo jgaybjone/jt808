@@ -1,0 +1,19 @@
+plugins {
+    id 'java'
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+dependencies {
+    implementation project(':core-domain')
+    implementation 'io.netty:netty-buffer:4.1.48.Final'
+    implementation 'org.slf4j:slf4j-api:1.7.30'
+    implementation 'org.springframework:spring-core:5.2.5.RELEASE'
+    compileOnly 'org.projectlombok:lombok:1.18.12'
+    annotationProcessor 'org.projectlombok:lombok:1.18.12'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}

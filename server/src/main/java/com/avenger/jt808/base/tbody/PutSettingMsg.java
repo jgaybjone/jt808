@@ -1,6 +1,6 @@
 package com.avenger.jt808.base.tbody;
 
-import com.avenger.jt808.base.annotation.WritingMessageType;
+import com.avenger.jt808.domain.WritingMessageType;
 import com.avenger.jt808.domain.Body;
 import com.avenger.jt808.base.SettingParams;
 import com.avenger.jt808.base.pbody.SettingDetailMsg;

@@ -1,6 +1,6 @@
 package com.avenger.jt808.base.pbody;
 
-import com.avenger.jt808.base.annotation.AdditionalAble;
+import com.avenger.jt808.domain.AdditionalAble;
 import com.avenger.jt808.util.BinaryUtils;
 import io.netty.buffer.ByteBuf;
 import lombok.Data;

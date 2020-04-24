@@ -1,12 +1,8 @@
 package com.avenger.jt808.base;
 
-import com.avenger.jt808.base.annotation.AdditionalAble;
-import com.avenger.jt808.base.annotation.ReadingMessageType;
-import com.avenger.jt808.domain.Body;
-import com.avenger.jt808.domain.Header;
-import com.avenger.jt808.domain.Message;
 import com.avenger.jt808.base.pbody.Additional;
 import com.avenger.jt808.base.pbody.UnknownAdditional;
+import com.avenger.jt808.domain.*;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.Data;
@@ -113,14 +109,12 @@ public class MessageFactory implements ApplicationContextAware {
         final Header header = new Header(byteBuf);
         final Class<Body> bodyClass = BODY_TYPE_MAPPING.get(header.getId());
         final Body body = bodyClass.newInstance();
-        body.deSerialize(byteBuf.readBytes(header.getBodySize()));
+        final byte[] bytes = new byte[header.getBodySize()];
+        byteBuf.readBytes(bytes);
+        body.deSerialize(Unpooled.wrappedBuffer(bytes));
         final Message message = new Message();
         message.setHeader(header);
         message.setMsgBody(body);
-        if (log.isDebugEnabled()) {
-            log.debug("消息解析成功，消息类型：{}" +
-                    "\n>>>>>>>>>>>>>detail: {}", Integer.toHexString(header.getId()), message.toString());
-        }
         return message;
     }
 

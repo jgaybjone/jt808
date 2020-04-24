@@ -6,6 +6,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ReplayingDecoder;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ import java.util.List;
  * Created by jg.wang on 2020/4/9.
  * Description:
  */
+@Slf4j
 public class MessageDecoder extends ReplayingDecoder<Void> {
 
     MessageFactory messageFactory;
@@ -48,6 +50,10 @@ public class MessageDecoder extends ReplayingDecoder<Void> {
         }
         final Message message = messageFactory.create(buffer);
         message.setVerified(this.check(buffer.resetReaderIndex()));
+        if (log.isDebugEnabled()) {
+            log.debug("消息解析成功，消息类型：{}" +
+                    "\n>>>>>>>>>>>>>detail: {}", Integer.toHexString(message.getHeader().getId()), message.toString());
+        }
         out.add(message);
 
 
@@ -57,10 +63,10 @@ public class MessageDecoder extends ReplayingDecoder<Void> {
     private boolean check(ByteBuf byteBuf) {
         final int len = byteBuf.readableBytes();
         int check = 0;
-        for (int i = 0; i < len - 2; i++) {
+        for (int i = 0; i < len - 1; i++) {
             check = check ^ byteBuf.readByte();
         }
-        return byteBuf.readByte() == check;
+        return byteBuf.readByte() == (byte) check;
     }
 
 //    public static void main(String[] args) {

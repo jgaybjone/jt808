@@ -21,7 +21,7 @@ dependencies {
     implementation project(':core-domain')
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-amqp'
-    implementation 'or≤g.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis-reactive'
     implementation 'org.springframework.boot:spring-boot-starter-log4j2'
     //异步日志
@@ -54,12 +54,12 @@ compileTestKotlin {
 //这里进行noArg的配置
 noArg {
     //配置路径就是咱们先开始定义的那个注解类
-    annotation("com.avenger.jt808.base.annotation.NoArg")
+    annotation("com.avenger.jt808.domain.NoArg")
 }
 //这里进行allOpen的配置
 allOpen {
     //配置路径就是咱们先开始定义的那个注解类
-    annotation("com.avenger.jt808.base.annotation.AllOpen")
+    annotation("com.avenger.jt808.domain.AllOpen")
 }
 
 test {

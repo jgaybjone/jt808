@@ -1,6 +1,6 @@
 package com.avenger.jt808.base.pbody;
 
-import com.avenger.jt808.base.annotation.ReadingMessageType;
+import com.avenger.jt808.domain.ReadingMessageType;
 import io.netty.buffer.ByteBuf;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

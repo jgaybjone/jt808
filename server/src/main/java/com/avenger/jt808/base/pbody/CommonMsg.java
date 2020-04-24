@@ -1,7 +1,7 @@
 package com.avenger.jt808.base.pbody;
 
-import com.avenger.jt808.base.annotation.ReadingMessageType;
-import com.avenger.jt808.base.annotation.WritingMessageType;
+import com.avenger.jt808.domain.ReadingMessageType;
+import com.avenger.jt808.domain.WritingMessageType;
 import com.avenger.jt808.domain.Body;
 import com.avenger.jt808.util.CommonResult;
 import io.netty.buffer.ByteBuf;

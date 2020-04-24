@@ -1,6 +1,6 @@
 package com.avenger.jt808.base.pbody;
 
-import com.avenger.jt808.base.annotation.WritingMessageType;
+import com.avenger.jt808.domain.WritingMessageType;
 import com.avenger.jt808.domain.Body;
 import io.netty.buffer.ByteBuf;
 import lombok.Data;
