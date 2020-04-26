@@ -22,8 +22,11 @@ public class MessageEncoder extends MessageToByteEncoder<Message> {
         final byte[] b = msg.getMsgBody().serialize();
         buffer.writeBytes(header.getRaw((byte) b.length));
         buffer.writeBytes(b);
+        out.writeByte(0x7e);
+        int check = 0;
         while (buffer.isReadable()) {
             final byte c = buffer.readByte();
+            check = check ^ c;
             switch (c) {
                 case 0x7D:
                     out.writeShort(0x7D01);
@@ -32,9 +35,11 @@ public class MessageEncoder extends MessageToByteEncoder<Message> {
                     out.writeShort(0x7D02);
                     break;
                 default:
-                    out.writeShort(c);
+                    out.writeByte(c);
                     break;
             }
         }
+        out.writeByte(check);
+        out.writeByte(0x7e);
     }
 }

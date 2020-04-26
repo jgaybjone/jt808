@@ -2,6 +2,7 @@ package com.avenger.jt808.server;
 
 import com.avenger.jt808.domain.Message;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.AllArgsConstructor;
@@ -19,6 +20,7 @@ import java.util.function.Consumer;
  */
 @Slf4j
 @AllArgsConstructor
+@ChannelHandler.Sharable
 public class SimpleChannelMessageHandler extends SimpleChannelInboundHandler<Message> {
 
     private final MessageHandlerManager messageHandlerManager;

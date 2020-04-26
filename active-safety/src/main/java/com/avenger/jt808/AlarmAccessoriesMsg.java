@@ -44,7 +44,7 @@ public class AlarmAccessoriesMsg implements Body {
         this.alarmIdentification.setSerialNumber(buffer.readByte());
         this.alarmIdentification.setNumberOfAttachments(buffer.readByte());
         this.alarmIdentification.setReserve(buffer.readByte());
-        this.alarmNo = ByteBufUtils.toStringWithGBK(buffer, 23);
+        this.alarmNo = ByteBufUtils.toStringWithGBK(buffer, 32);
         this.type = buffer.readByte();
         final byte numberOfAttachments = buffer.readByte();
         final ArrayList<AttachmentInfo> attachmentInfos = new ArrayList<>();

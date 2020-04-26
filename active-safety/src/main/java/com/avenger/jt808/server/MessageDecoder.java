@@ -2,10 +2,12 @@ package com.avenger.jt808.server;
 
 import com.avenger.jt808.AlarmAccessoriesMsg;
 import com.avenger.jt808.AttachmentInformationMsg;
+import com.avenger.jt808.FileData;
 import com.avenger.jt808.UploadCompleteMsg;
 import com.avenger.jt808.domain.Body;
 import com.avenger.jt808.domain.Header;
 import com.avenger.jt808.domain.Message;
+import com.avenger.jt808.util.ByteBufUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
@@ -22,6 +24,20 @@ public class MessageDecoder extends ReplayingDecoder<Void> {
 
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
+        in.markReaderIndex();
+        int flag = in.readInt();
+        if (flag == 0x30316364) {
+            final FileData fileData = new FileData();
+            fileData.setFileName(ByteBufUtils.toStringWithGBK(in, 50).trim());
+            fileData.setOffset(in.readUnsignedInt());
+            final byte[] data = new byte[in.readInt()];
+            in.readBytes(data);
+            fileData.setData(data);
+            out.add(fileData);
+            return;
+        }
+        in.resetReaderIndex();
+
         final byte b = in.readByte();
         if (b != 0x7E) {
             return;
