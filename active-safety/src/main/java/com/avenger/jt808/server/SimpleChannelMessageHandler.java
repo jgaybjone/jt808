@@ -35,7 +35,8 @@ public class SimpleChannelMessageHandler extends SimpleChannelInboundHandler<Mes
             if (channel.isActive()) {
                 channel.writeAndFlush(m);
             } else {
-                log.error("channel is inactive id ：{} ", channel.hashCode());
+                log.error("channel is inactive id ：{} ，req : {}, resp : {}",
+                        channel.hashCode(), JsonUtils.objToJsonStr(msg), JsonUtils.objToJsonStr(m));
             }
         };
         if (process instanceof Flux) {

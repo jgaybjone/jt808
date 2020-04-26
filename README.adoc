@@ -10,8 +10,23 @@ For further reference, please consider the following sections:
 * https://docs.spring.io/spring-boot/docs/2.2.6.RELEASE/reference/htmlsingle/#boot-features-redis[Spring Data Reactive Redis]
 * https://docs.spring.io/spring-boot/docs/2.2.6.RELEASE/reference/htmlsingle/#boot-features-amqp[Spring for RabbitMQ]
 * https://docs.spring.io/spring-boot/docs/2.2.6.RELEASE/reference/htmlsingle/#boot-features-jpa-and-spring-data[Spring Data JPA]
+* https://raw.githubusercontent.com/jgaybjone/document/master/JTT%20808-2013.pdf[交通部标准JTT 808-2013.pdf]
+* https://raw.githubusercontent.com/jgaybjone/document/master/JTT%21078-2016《道路运输车辆卫星定位系统车载视频通信协议》.pdf[道路运输车辆卫星定位系统车载视频通信协议.pdf]
 
-=== Guides
+== 简介
+
+交通部jt808、jt1078和苏标主动安全的平台端实现
+
+* core-domain 公共可以使用的领域模型
+* active-safety 苏标主动安全系统的附件服务器实现
+* server 808平台实现
+
+=== server 808平台实现
+平台使用框架spring boot2.0 、netty和reactor函数式响应编程实现了jt808的协议
+，服务间通讯采用全异步rsocket协议和RabbitMQ中间件。数据库采用基于postgresql的timescale，即能保存时许数据又能兼顾普通关系型数据
+
+=== active-safety 苏标主动安全系统的附件服务器实现
+附件服务器功能单一，因此抛弃重量级spring boot框架，只增加了vert.x-rabbit依赖用来发送mq消息。实现启动后占用内存不超过120M。
 
 The following guides illustrate how to use some features concretely:
 
@@ -20,7 +35,7 @@ The following guides illustrate how to use some features concretely:
 * https://spring.io/guides/gs/messaging-rabbitmq/[Messaging with RabbitMQ]
 * https://spring.io/guides/gs/accessing-data-jpa/[Accessing Data with JPA]
 
-=== Additional Links
+== Additional Links
 
 These additional references should also help you:
 
