@@ -27,11 +27,13 @@ public class FileDataChannelInHandler extends SimpleChannelInboundHandler<FileDa
     protected void channelRead0(ChannelHandlerContext ctx, FileData msg) throws Exception {
         final File file = new File(uploadDir + msg.getFileName());
         if (file.exists()) {
-            log.info("写入文件: {}, file size : {}, package offset : {}", file.getPath(), file.list(), msg.getOffset());
+            log.info("写入文件: {}, file size : {}, package offset : {}, package size : {}", file.getPath(), file.length(), msg.getOffset(), msg.getData().length);
 //            if (file.length() == msg.getOffset()) {
 //                FileUtils.writeByteArrayToFile(file, msg.getData(), true);
 //            } else {
 //                log.warn("偏移量错误");
+        } else {
+            log.info("创建文件 : {}, package offset : {}, package size : {}", file.getPath(), msg.getOffset(), msg.getData().length);
         }
 //        } else {
         FileUtils.writeByteArrayToFile(file, msg.getData(), true);
