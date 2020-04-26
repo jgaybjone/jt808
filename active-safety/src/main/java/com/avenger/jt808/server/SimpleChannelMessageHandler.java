@@ -35,7 +35,7 @@ public class SimpleChannelMessageHandler extends SimpleChannelInboundHandler<Mes
             if (channel.isActive()) {
                 channel.writeAndFlush(m);
             } else {
-                log.error("channel is inactive");
+                log.error("channel is inactive id ：{} ", channel.hashCode());
             }
         };
         if (process instanceof Flux) {
@@ -51,6 +51,7 @@ public class SimpleChannelMessageHandler extends SimpleChannelInboundHandler<Mes
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        log.error("channel is inactive id ：{} ", ctx.channel().hashCode());
         super.channelInactive(ctx);
     }
 
