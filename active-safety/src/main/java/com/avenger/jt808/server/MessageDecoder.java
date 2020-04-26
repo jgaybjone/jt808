@@ -60,7 +60,6 @@ public class MessageDecoder extends ReplayingDecoder<Void> {
                 buffer.writeByte(cu);
             }
         }
-
         final Header header = new Header(buffer);
         Body body;
         switch (header.getId()) {

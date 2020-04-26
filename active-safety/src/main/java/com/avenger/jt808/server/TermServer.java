@@ -32,10 +32,6 @@ public class TermServer {
 
     private int termPort = 9290;
 
-    private MessageHandlerManager messageHandlerManager;
-
-    private String uploadDir;
-
     private SimpleChannelMessageHandler messageHandler;
 
     private FileDataChannelInHandler fileDataChannelInHandler;
@@ -60,7 +56,6 @@ public class TermServer {
                                 throws Exception {
                             //超过20分钟未收到客户端消息则自动断开客户端连接
                             ch.pipeline().addLast("idleStateHandler", new IdleStateHandler(20, 0, 0, TimeUnit.MINUTES));
-//                            ch.pipeline().addLast("fileDecoder", new FileDataDecoder());
                             ch.pipeline().addLast("messageDecoder", new MessageDecoder());
                             ch.pipeline().addLast("messageHandler", messageHandler);
                             ch.pipeline().addLast("fileDataChannelInHandler", fileDataChannelInHandler);
@@ -84,7 +79,8 @@ public class TermServer {
     public static void main(String[] args) {
         final TermServer termServer = new TermServer();
         String uploadDir = "/data/jt808/upload/";
-        ResourceBundle resource = ResourceBundle.getBundle("application-dev");
+        final String env = System.getProperty("env", "dev");
+        ResourceBundle resource = ResourceBundle.getBundle("application-" + env);
         final RabbitMQClient rabbit = rabbit(resource);
         rabbit.start(ar -> {
             if (ar.succeeded()) {
@@ -123,8 +119,6 @@ public class TermServer {
         messageHandlers.add(attachmentInformationHandler);
         messageHandlers.add(uploadFinishHandler);
         final MessageHandlerManager messageHandlerManager = new MessageHandlerManager(messageHandlers);
-        termServer.messageHandlerManager = messageHandlerManager;
-        termServer.uploadDir = uploadDir;
         termServer.messageHandler = new SimpleChannelMessageHandler(messageHandlerManager);
         termServer.fileDataChannelInHandler = new FileDataChannelInHandler(uploadDir);
         termServer.start();
