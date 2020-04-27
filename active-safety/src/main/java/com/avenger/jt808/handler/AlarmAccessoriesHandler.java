@@ -14,7 +14,7 @@ import reactor.core.publisher.Mono;
  */
 public class AlarmAccessoriesHandler implements MessageHandler {
     @Override
-    public int getId() {
+    public short getId() {
         return 0x1210;
     }
 

@@ -9,7 +9,7 @@ import org.reactivestreams.Publisher;
  */
 public interface MessageHandler {
 
-    int getId();
+    short getId();
 
     Publisher<Message> process(Message message);
 }

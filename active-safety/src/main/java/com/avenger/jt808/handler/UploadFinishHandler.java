@@ -17,7 +17,7 @@ import java.util.Collections;
  */
 public class UploadFinishHandler implements MessageHandler {
     @Override
-    public int getId() {
+    public short getId() {
         return 0x1212;
     }
 
