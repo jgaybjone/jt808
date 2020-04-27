@@ -2,6 +2,7 @@ package com.avenger.jt808.server;
 
 import com.avenger.jt808.base.MessageFactory;
 import com.avenger.jt808.domain.Message;
+import com.avenger.jt808.util.JsonUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
@@ -64,8 +65,7 @@ public class MessageDecoder extends ReplayingDecoder<Void> {
         message.setVerified(this.check(buffer.resetReaderIndex()));
         out.add(message);
         if (log.isDebugEnabled()) {
-            log.debug("消息解析成功，消息类型：{}" +
-                    "\n>>>>>>>>>>>>>detail: {}", Integer.toHexString(message.getHeader().getId()), message.toString());
+            log.debug("处理消息：{}, raw data: {}", JsonUtils.objToJsonStr(message), stringBuilder.toString().replaceAll("ffffff", ""));
         }
 
 

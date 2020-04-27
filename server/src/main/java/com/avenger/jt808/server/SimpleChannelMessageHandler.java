@@ -34,7 +34,7 @@ public class SimpleChannelMessageHandler extends SimpleChannelInboundHandler<Mes
                 channel.writeAndFlush(m);
             } else {
                 log.error("channel is inactive id ：{} ，req : {}, resp : {}",
-                        channel.hashCode(), JsonUtils.objToJsonStr(msg), JsonUtils.objToJsonStr(m));
+                        channel.id().asLongText(), JsonUtils.objToJsonStr(msg), JsonUtils.objToJsonStr(m));
             }
         };
         if (process instanceof Flux) {
@@ -51,7 +51,7 @@ public class SimpleChannelMessageHandler extends SimpleChannelInboundHandler<Mes
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         super.channelInactive(ctx);
-        log.info("channel is inactive id ：{} ", ctx.channel().hashCode());
+        log.info("channel is inactive id ：{} ", ctx.channel().id().asLongText());
         TermConnManager.connBreak(ctx.channel());
     }
 

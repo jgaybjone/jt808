@@ -60,7 +60,7 @@ public class MessageEncoder extends MessageToByteEncoder<Message> {
         out.writeByte(0x7e);
         stringBuilder.append("7e");
         if (log.isDebugEnabled()) {
-            log.debug("out bytes: {}", stringBuilder.toString().replaceAll("ffffff", ""));
+            log.debug("channel id : {} , out bytes: {}", ctx.channel().id().asLongText(), stringBuilder.toString().replaceAll("ffffff", ""));
         }
     }
 }
