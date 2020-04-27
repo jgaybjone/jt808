@@ -1,6 +1,7 @@
 package com.avenger.jt808.server;
 
 import com.avenger.jt808.domain.Message;
+import com.avenger.jt808.util.JsonUtils;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -32,7 +33,8 @@ public class SimpleChannelMessageHandler extends SimpleChannelInboundHandler<Mes
             if (channel.isActive()) {
                 channel.writeAndFlush(m);
             } else {
-                log.error("channel is inactive");
+                log.error("channel is inactive id ：{} ，req : {}, resp : {}",
+                        channel.hashCode(), JsonUtils.objToJsonStr(msg), JsonUtils.objToJsonStr(m));
             }
         };
         if (process instanceof Flux) {
@@ -49,6 +51,7 @@ public class SimpleChannelMessageHandler extends SimpleChannelInboundHandler<Mes
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         super.channelInactive(ctx);
+        log.info("channel is inactive id ：{} ", ctx.channel().hashCode());
         TermConnManager.connBreak(ctx.channel());
     }
 

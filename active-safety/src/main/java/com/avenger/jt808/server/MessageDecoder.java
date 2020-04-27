@@ -60,6 +60,11 @@ public class MessageDecoder extends ReplayingDecoder<Void> {
                 break;
             } else if (cu == 0x7D) {//处理转义
                 final byte cu2 = in.readByte();
+                final String hex2 = Integer.toHexString(cu2);
+                if (hex2.length() < 2) {
+                    stringBuilder.append(0);
+                }
+                stringBuilder.append(hex2);
                 if (cu2 == 0x02) {
                     buffer.writeByte(0x7E);
                 } else if (cu2 == 0x01) {

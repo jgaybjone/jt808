@@ -30,13 +30,25 @@ public class MessageDecoder extends ReplayingDecoder<Void> {
         if (b != 0x7E) {
             return;
         }
+        final StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("7e");
         final ByteBuf buffer = Unpooled.buffer(100);
         while (true) {
             final byte cu = in.readByte();
+            final String hex = Integer.toHexString(cu);
+            if (hex.length() < 2) {
+                stringBuilder.append(0);
+            }
+            stringBuilder.append(hex);
             if (cu == 0x7E) {
                 break;
             } else if (cu == 0x7D) {//处理转义
                 final byte cu2 = in.readByte();
+                final String hex2 = Integer.toHexString(cu2);
+                if (hex2.length() < 2) {
+                    stringBuilder.append(0);
+                }
+                stringBuilder.append(hex2);
                 if (cu2 == 0x02) {
                     buffer.writeByte(0x7E);
                 } else if (cu2 == 0x01) {
@@ -50,11 +62,11 @@ public class MessageDecoder extends ReplayingDecoder<Void> {
         }
         final Message message = messageFactory.create(buffer);
         message.setVerified(this.check(buffer.resetReaderIndex()));
+        out.add(message);
         if (log.isDebugEnabled()) {
             log.debug("消息解析成功，消息类型：{}" +
                     "\n>>>>>>>>>>>>>detail: {}", Integer.toHexString(message.getHeader().getId()), message.toString());
         }
-        out.add(message);
 
 
     }
