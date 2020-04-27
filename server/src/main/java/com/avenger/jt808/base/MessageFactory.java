@@ -130,6 +130,7 @@ public class MessageFactory implements ApplicationContextAware {
                 final byte len = byteBuf.readByte();
                 final byte[] bytes = new byte[len];
                 byteBuf.readBytes(bytes);
+                un.setRaw(bytes);
                 adds.add(un);
             } else {
                 try {
