@@ -13,6 +13,7 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ReplayingDecoder;
 import io.netty.handler.codec.UnsupportedMessageTypeException;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ import java.util.List;
  * Created by jg.wang on 2020/4/24.
  * Description:
  */
+@Slf4j
 public class MessageDecoder extends ReplayingDecoder<Void> {
 
     @Override
@@ -43,8 +45,15 @@ public class MessageDecoder extends ReplayingDecoder<Void> {
             return;
         }
         final ByteBuf buffer = Unpooled.buffer(100);
+        final StringBuilder stringBuilder = new StringBuilder();
         while (true) {
             final byte cu = in.readByte();
+            final String hex = Integer.toHexString(cu);
+            if (hex.length() < 2) {
+                stringBuilder.append(0);
+            }
+            stringBuilder.append(hex);
+
             if (cu == 0x7E) {
                 break;
             } else if (cu == 0x7D) {//处理转义
@@ -59,6 +68,9 @@ public class MessageDecoder extends ReplayingDecoder<Void> {
             } else {
                 buffer.writeByte(cu);
             }
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("input bytes : {}", stringBuilder.toString());
         }
         final Header header = new Header(buffer);
         Body body;

@@ -137,7 +137,10 @@ public class Header {
             byteBuf.writeShort(packetsCount)
                     .writeShort(packetNumber);
         }
-        return byteBuf.array();
+        final byte[] r = new byte[byteBuf.readableBytes()];
+        byteBuf.readBytes(r);
+        return r;
+//        return byteBuf.array();
     }
 
 }
