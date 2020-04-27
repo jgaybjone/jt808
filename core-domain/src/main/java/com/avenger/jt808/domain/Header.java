@@ -29,12 +29,12 @@ public class Header {
     /**
      * 终端手机号
      */
-    private String simNo;
+    private final String simNo;
 
     /**
      * 消息流水号
      */
-    private short serialNo;
+    private final short serialNo;
 
     /**
      * 消息包数量

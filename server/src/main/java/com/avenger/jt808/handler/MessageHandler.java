@@ -1,4 +1,4 @@
-package com.avenger.jt808.server;
+package com.avenger.jt808.handler;
 
 import com.avenger.jt808.domain.Message;
 import org.reactivestreams.Publisher;
@@ -9,7 +9,7 @@ import org.reactivestreams.Publisher;
  */
 public interface MessageHandler {
 
-    int getId();
+    short getId();
 
     Publisher<Message> process(Message message);
 }
