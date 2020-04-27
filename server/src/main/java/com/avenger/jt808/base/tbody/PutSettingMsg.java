@@ -4,6 +4,7 @@ import com.avenger.jt808.domain.WritingMessageType;
 import com.avenger.jt808.domain.Body;
 import com.avenger.jt808.base.SettingParams;
 import com.avenger.jt808.base.pbody.SettingDetailMsg;
+import com.avenger.jt808.util.ByteBufUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.Getter;
@@ -34,7 +35,7 @@ public class PutSettingMsg implements Body {
         final ByteBuf buffer = Unpooled.buffer(200);
         buffer.writeByte(this.getSize());
         SettingDetailMsg.paramsSerialize(this.settingParams, buffer);
-        return buffer.array();
+        return ByteBufUtils.array(buffer);
     }
 
     @Override

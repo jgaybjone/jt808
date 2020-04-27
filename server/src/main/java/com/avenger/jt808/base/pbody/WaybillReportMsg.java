@@ -1,7 +1,7 @@
 package com.avenger.jt808.base.pbody;
 
-import com.avenger.jt808.domain.ReadingMessageType;
 import com.avenger.jt808.domain.Body;
+import com.avenger.jt808.domain.ReadingMessageType;
 import com.avenger.jt808.util.ByteBufUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -23,8 +23,8 @@ public class WaybillReportMsg implements Body {
 
     @Override
     public byte[] serialize() {
-        return Unpooled.buffer(content.length() + 4).writeInt(content.length())
-                .writeBytes(content.getBytes(Charset.forName("GBK"))).array();
+        return ByteBufUtils.array(Unpooled.buffer(content.length() + 4).writeInt(content.length())
+                .writeBytes(content.getBytes(Charset.forName("GBK"))));
     }
 
     @Override

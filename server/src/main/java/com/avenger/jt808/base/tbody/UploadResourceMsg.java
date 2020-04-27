@@ -1,10 +1,11 @@
 package com.avenger.jt808.base.tbody;
 
-import com.avenger.jt808.domain.WritingMessageType;
-import com.avenger.jt808.domain.Body;
 import com.avenger.jt808.base.pbody.AlarmDetail;
+import com.avenger.jt808.domain.Body;
+import com.avenger.jt808.domain.WritingMessageType;
 import com.avenger.jt808.enums.ResourceType;
 import com.avenger.jt808.util.ByteArrayUtils;
+import com.avenger.jt808.util.ByteBufUtils;
 import com.avenger.jt808.util.LocalDateTimeUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -70,7 +71,7 @@ public class UploadResourceMsg implements Body {
 
     @Override
     public byte[] serialize() {
-        return Unpooled.buffer(100)
+        return ByteBufUtils.array(Unpooled.buffer(100)
                 .writeByte(ip.length())
                 .writeBytes(ip.getBytes(Charset.forName("GBK")))
                 .writeByte(port)
@@ -88,8 +89,7 @@ public class UploadResourceMsg implements Body {
                 .writeByte(resourceType.ordinal())
                 .writeByte(bitStreamType.ordinal())
                 .writeByte(memType.ordinal())
-                .writeByte(networkConditions)
-                .array();
+                .writeByte(networkConditions));
     }
 
     @Override

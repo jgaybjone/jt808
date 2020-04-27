@@ -2,6 +2,7 @@ package com.avenger.jt808.base.pbody;
 
 import com.avenger.jt808.domain.AdditionalAble;
 import com.avenger.jt808.enums.DrivingTimeResult;
+import com.avenger.jt808.util.ByteBufUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.Data;
@@ -23,12 +24,11 @@ public class DrivingTimeAdd implements Additional {
 
     @Override
     public byte[] serialize() {
-        return Unpooled.buffer(7)
+        return ByteBufUtils.array(Unpooled.buffer(7)
                 .writeByte(getId())
                 .writeInt(roundId)
                 .writeShort(drivingTime)
-                .writeByte(result.getValue())
-                .array();
+                .writeByte(result.getValue()));
     }
 
     @Override

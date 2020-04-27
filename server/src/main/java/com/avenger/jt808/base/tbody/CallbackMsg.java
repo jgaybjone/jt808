@@ -1,7 +1,8 @@
 package com.avenger.jt808.base.tbody;
 
-import com.avenger.jt808.domain.WritingMessageType;
 import com.avenger.jt808.domain.Body;
+import com.avenger.jt808.domain.WritingMessageType;
+import com.avenger.jt808.util.ByteBufUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.Getter;
@@ -30,11 +31,10 @@ public class CallbackMsg implements Body {
 
     @Override
     public byte[] serialize() {
-        return Unpooled.buffer(100)
+        return ByteBufUtils.array(Unpooled.buffer(100)
                 .writeByte(flag)
                 .writeByte(simNo.length())
-                .writeBytes(simNo.getBytes(Charset.forName("GBK")))
-                .array();
+                .writeBytes(simNo.getBytes(Charset.forName("GBK"))));
     }
 
     @Override

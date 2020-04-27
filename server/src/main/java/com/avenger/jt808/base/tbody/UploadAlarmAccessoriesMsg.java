@@ -1,9 +1,10 @@
 package com.avenger.jt808.base.tbody;
 
-import com.avenger.jt808.domain.WritingMessageType;
 import com.avenger.jt808.domain.AlarmIdentification;
 import com.avenger.jt808.domain.Body;
+import com.avenger.jt808.domain.WritingMessageType;
 import com.avenger.jt808.util.ByteArrayUtils;
+import com.avenger.jt808.util.ByteBufUtils;
 import com.avenger.jt808.util.LocalDateTimeUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -42,7 +43,7 @@ public class UploadAlarmAccessoriesMsg implements Body {
         final ByteBuf buffer = Unpooled.buffer(40);
         final LocalDateTime date = alarmIdentification.getDate() == null ? LocalDateTime.now() : alarmIdentification.getDate();
 
-        return buffer.writeByte(host.length())
+        return ByteBufUtils.array(buffer.writeByte(host.length())
                 .writeBytes(host.getBytes(Charset.forName("GBK")))
                 .writeShort(tcpPort)
                 .writeShort(udpPort)
@@ -52,7 +53,7 @@ public class UploadAlarmAccessoriesMsg implements Body {
                 .writeByte(alarmIdentification.getNumberOfAttachments())
                 .writeByte(alarmIdentification.getReserve())
                 .writeBytes(alarmNo.getBytes(Charset.forName("GBK")))
-                .writeBytes(reserve).array();
+                .writeBytes(reserve));
     }
 
     @Override

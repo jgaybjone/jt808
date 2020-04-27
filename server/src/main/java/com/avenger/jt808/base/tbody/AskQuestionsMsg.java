@@ -2,6 +2,7 @@ package com.avenger.jt808.base.tbody;
 
 import com.avenger.jt808.domain.WritingMessageType;
 import com.avenger.jt808.domain.Body;
+import com.avenger.jt808.util.ByteBufUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.Data;
@@ -61,7 +62,7 @@ public class AskQuestionsMsg implements Body {
                         .writeBytes(answer.content.getBytes(Charset.forName("GBK")));
             });
         }
-        return byteBuf.array();
+        return ByteBufUtils.array(byteBuf);
     }
 
     @Override

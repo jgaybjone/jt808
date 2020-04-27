@@ -1,7 +1,8 @@
 package com.avenger.jt808.base.pbody;
 
-import com.avenger.jt808.domain.ReadingMessageType;
 import com.avenger.jt808.domain.Body;
+import com.avenger.jt808.domain.ReadingMessageType;
+import com.avenger.jt808.util.ByteBufUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.Data;
@@ -24,10 +25,9 @@ public class DataUpPenetrationMsg implements Body {
     @Override
     public byte[] serialize() {
 
-        return Unpooled.buffer(data.length + 1)
+        return ByteBufUtils.array(Unpooled.buffer(data.length + 1)
                 .writeByte(type)
-                .writeBytes(data)
-                .array();
+                .writeBytes(data));
     }
 
     @Override

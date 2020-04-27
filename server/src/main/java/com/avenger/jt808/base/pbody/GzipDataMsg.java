@@ -1,7 +1,7 @@
 package com.avenger.jt808.base.pbody;
 
-import com.avenger.jt808.domain.ReadingMessageType;
 import com.avenger.jt808.domain.Body;
+import com.avenger.jt808.domain.ReadingMessageType;
 import io.netty.buffer.ByteBuf;
 import lombok.Data;
 
@@ -24,6 +24,8 @@ public class GzipDataMsg implements Body {
 
     @Override
     public void deSerialize(ByteBuf byteBuf) {
-        this.data = byteBuf.readBytes(byteBuf.readInt()).array();
+        final byte[] bytes = new byte[byteBuf.readInt()];
+        byteBuf.readBytes(bytes);
+        this.data = bytes;
     }
 }

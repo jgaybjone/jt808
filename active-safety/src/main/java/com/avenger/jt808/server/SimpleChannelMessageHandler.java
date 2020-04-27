@@ -28,7 +28,6 @@ public class SimpleChannelMessageHandler extends SimpleChannelInboundHandler<Mes
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Message msg) throws Exception {
-        log.info("处理消息：{}", JsonUtils.objToJsonStr(msg));
         final Channel channel = ctx.channel();
         final Publisher<Message> process = messageHandlerManager.process(msg);
         Consumer<Message> consumer = m -> {

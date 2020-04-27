@@ -3,6 +3,7 @@ package com.avenger.jt808.base.tbody;
 import com.avenger.jt808.domain.WritingMessageType;
 import com.avenger.jt808.domain.Body;
 import com.avenger.jt808.enums.EventType;
+import com.avenger.jt808.util.ByteBufUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.Data;
@@ -45,7 +46,7 @@ public class EventConfigMsg implements Body {
                     .writeByte(content.length)
                     .writeBytes(content);
         });
-        return byteBuf.array();
+        return ByteBufUtils.array(byteBuf);
     }
 
     @Override

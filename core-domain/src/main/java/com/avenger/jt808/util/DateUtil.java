@@ -91,8 +91,7 @@ public class DateUtil {
     }
 
     public static double getSeconds(Date start, Date end) {
-        double diffInSeconds = 0.001 * (end.getTime() - start.getTime());
-        return diffInSeconds;
+        return 0.001 * (end.getTime() - start.getTime());
     }
 
     public static Date getDate(Date date, int field, int i) {
@@ -217,13 +216,13 @@ public class DateUtil {
         return stringToDatetime(str, "yyyy-MM-dd HH:mm");
     }
 
-    public static List getDates(Date date1, Date date2) {
+    public static List<?> getDates(Date date1, Date date2) {
         if (date1 == null || date2 == null)
-            return new ArrayList();
+            return new ArrayList<>();
 
         int day = getDay(date1, date2);
 
-        List dates = new ArrayList();
+        List<Object> dates = new ArrayList<>();
 
         for (int i = 0; i <= day; i++) {
             Date date = getDate(date1, i);

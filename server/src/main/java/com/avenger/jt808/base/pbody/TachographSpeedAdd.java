@@ -1,6 +1,7 @@
 package com.avenger.jt808.base.pbody;
 
 import com.avenger.jt808.domain.AdditionalAble;
+import com.avenger.jt808.util.ByteBufUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.Data;
@@ -17,10 +18,9 @@ public class TachographSpeedAdd implements Additional {
 
     @Override
     public byte[] serialize() {
-        return Unpooled.buffer(3)
+        return ByteBufUtils.array(Unpooled.buffer(3)
                 .writeByte(getId())
-                .writeShort(speed)
-                .array();
+                .writeShort(speed));
     }
 
     @Override

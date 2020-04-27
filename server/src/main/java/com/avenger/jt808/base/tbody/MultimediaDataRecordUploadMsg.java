@@ -1,10 +1,11 @@
 package com.avenger.jt808.base.tbody;
 
-import com.avenger.jt808.domain.WritingMessageType;
 import com.avenger.jt808.domain.Body;
+import com.avenger.jt808.domain.WritingMessageType;
 import com.avenger.jt808.enums.EventItem;
 import com.avenger.jt808.enums.MultimediaEventType;
 import com.avenger.jt808.util.ByteArrayUtils;
+import com.avenger.jt808.util.ByteBufUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.Data;
@@ -54,13 +55,13 @@ public class MultimediaDataRecordUploadMsg implements Body {
 
     @Override
     public byte[] serialize() {
-        return Unpooled.buffer(16)
+        return ByteBufUtils.array(Unpooled.buffer(16)
                 .writeByte(type.ordinal())
                 .writeByte(channelId)
                 .writeByte(eventItem.ordinal())
                 .writeBytes(ByteArrayUtils.bcdStrToBytes(DF.format(startDate)))
                 .writeBytes(ByteArrayUtils.bcdStrToBytes(DF.format(endDate)))
-                .writeByte(delete ? 1 : 0).array();
+                .writeByte(delete ? 1 : 0));
     }
 
     @Override

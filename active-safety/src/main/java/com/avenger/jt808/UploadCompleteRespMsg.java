@@ -2,6 +2,7 @@ package com.avenger.jt808;
 
 import com.avenger.jt808.domain.Body;
 import com.avenger.jt808.domain.WritingMessageType;
+import com.avenger.jt808.util.ByteBufUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.Data;
@@ -42,7 +43,7 @@ public class UploadCompleteRespMsg implements Body {
             buffer.writeByte(0);
         }
 
-        return buffer.array();
+        return ByteBufUtils.array(buffer);
     }
 
     @Override

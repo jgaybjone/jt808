@@ -1,6 +1,7 @@
 package com.avenger.jt808.base.pbody;
 
 import com.avenger.jt808.domain.ReadingMessageType;
+import com.avenger.jt808.util.ByteBufUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.Getter;
@@ -22,10 +23,9 @@ public class VehicleControlRespMsg extends LocationAndAlarmMsg {
 
     @Override
     public byte[] serialize() {
-        return Unpooled.buffer(500)
+        return ByteBufUtils.array(Unpooled.buffer(500)
                 .writeShort(respSerialNo)
-                .writeBytes(super.serialize())
-                .array();
+                .writeBytes(super.serialize()));
     }
 
     @Override

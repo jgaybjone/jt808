@@ -2,6 +2,7 @@ package com.avenger.jt808.base.pbody;
 
 import com.avenger.jt808.domain.ReadingMessageType;
 import com.avenger.jt808.domain.Body;
+import com.avenger.jt808.util.ByteBufUtils;
 import io.netty.buffer.ByteBuf;
 import lombok.Data;
 
@@ -27,6 +28,6 @@ public class AuthMsg implements Body {
 
     @Override
     public void deSerialize(ByteBuf byteBuf) {
-        this.authCode = new String(byteBuf.array(), Charset.forName("GBK"));
+        this.authCode = new String(ByteBufUtils.array(byteBuf), Charset.forName("GBK"));
     }
 }

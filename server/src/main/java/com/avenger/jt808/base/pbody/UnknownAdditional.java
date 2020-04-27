@@ -1,5 +1,6 @@
 package com.avenger.jt808.base.pbody;
 
+import com.avenger.jt808.util.ByteBufUtils;
 import io.netty.buffer.ByteBuf;
 import lombok.Data;
 
@@ -21,6 +22,6 @@ public class UnknownAdditional implements Additional {
 
     @Override
     public void deSerialize(ByteBuf byteBuf) {
-        this.raw = byteBuf.array();
+        this.raw = ByteBufUtils.array(byteBuf);
     }
 }

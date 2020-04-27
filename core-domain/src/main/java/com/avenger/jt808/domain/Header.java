@@ -2,6 +2,7 @@ package com.avenger.jt808.domain;
 
 import com.avenger.jt808.util.BinaryUtils;
 import com.avenger.jt808.util.ByteArrayUtils;
+import com.avenger.jt808.util.ByteBufUtils;
 import com.avenger.jt808.util.SerialNoUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -139,8 +140,8 @@ public class Header {
         }
         final byte[] r = new byte[byteBuf.readableBytes()];
         byteBuf.readBytes(r);
-        return r;
-//        return byteBuf.array();
+        return ByteBufUtils.array(byteBuf);
+//        return ByteBufUtils.array(byteBuf);
     }
 
 }

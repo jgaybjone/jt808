@@ -1,7 +1,8 @@
 package com.avenger.jt808.base.tbody;
 
-import com.avenger.jt808.domain.WritingMessageType;
 import com.avenger.jt808.domain.Body;
+import com.avenger.jt808.domain.WritingMessageType;
+import com.avenger.jt808.util.ByteBufUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.Getter;
@@ -79,7 +80,7 @@ public class MessageAckMsg implements Body {
 
     @Override
     public byte[] serialize() {
-        return Unpooled.buffer(6).writeShort(respSerialNo).writeInt(ackType).array();
+        return ByteBufUtils.array(Unpooled.buffer(6).writeShort(respSerialNo).writeInt(ackType));
     }
 
     @Override

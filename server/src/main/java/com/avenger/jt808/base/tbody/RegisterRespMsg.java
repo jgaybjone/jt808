@@ -41,7 +41,7 @@ public class RegisterRespMsg implements Body {
         if (result == RegisterResult.OK) {
             buffer.writeBytes(authCode.getBytes(Charset.forName("GBK")));
         }
-        return buffer.array();
+        return ByteBufUtils.array(buffer);
     }
 
     @Override

@@ -1,7 +1,8 @@
 package com.avenger.jt808.base.tbody;
 
-import com.avenger.jt808.domain.WritingMessageType;
 import com.avenger.jt808.domain.Body;
+import com.avenger.jt808.domain.WritingMessageType;
+import com.avenger.jt808.util.ByteBufUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.Data;
@@ -32,10 +33,9 @@ public class ReissueMsg implements Body {
     @Override
     public byte[] serialize() {
         final ByteBuf buffer = Unpooled.buffer(10);
-        return buffer.writeShort(originalSerialNo)
+        return ByteBufUtils.array(buffer.writeShort(originalSerialNo)
                 .writeByte(total)
-                .writeBytes(packetIds)
-                .array();
+                .writeBytes(packetIds));
     }
 
     @Override

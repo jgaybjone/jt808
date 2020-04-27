@@ -1,8 +1,9 @@
 package com.avenger.jt808.base.tbody;
 
-import com.avenger.jt808.domain.WritingMessageType;
-import com.avenger.jt808.domain.Body;
 import com.avenger.jt808.base.pbody.ControlParam;
+import com.avenger.jt808.domain.Body;
+import com.avenger.jt808.domain.WritingMessageType;
+import com.avenger.jt808.util.ByteBufUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.Data;
@@ -49,7 +50,7 @@ public class TerminalControlMsg implements Body {
                     .writeBytes(controlParam.getUrl().getBytes(Charset.forName("GBK")))
                     .writeShort(controlParam.getConnTime());
         }
-        return buffer.array();
+        return ByteBufUtils.array(buffer);
     }
 
     @Override
@@ -57,17 +58,17 @@ public class TerminalControlMsg implements Body {
         this.command = byteBuf.readByte();
         if (command > 0 && command > 3) {
             final ControlParam controlParam = new ControlParam();
-            controlParam.setApn(new String(this.readBreak(byteBuf).array(), Charset.forName("GBK")));
-            controlParam.setUsername(new String(this.readBreak(byteBuf).array(), Charset.forName("GBK")));
-            controlParam.setPassword(new String(this.readBreak(byteBuf).array(), Charset.forName("GBK")));
-            controlParam.setIp(new String(this.readBreak(byteBuf).array(), Charset.forName("GBK")));
+            controlParam.setApn(new String(ByteBufUtils.array(this.readBreak(byteBuf)), Charset.forName("GBK")));
+            controlParam.setUsername(new String(ByteBufUtils.array(this.readBreak(byteBuf)), Charset.forName("GBK")));
+            controlParam.setPassword(new String(ByteBufUtils.array(this.readBreak(byteBuf)), Charset.forName("GBK")));
+            controlParam.setIp(new String(ByteBufUtils.array(this.readBreak(byteBuf)), Charset.forName("GBK")));
             controlParam.setTcpPort(this.readBreak(byteBuf).readShort());
             controlParam.setUdpPort(this.readBreak(byteBuf).readShort());
-            controlParam.setManufId(new String(this.readBreak(byteBuf).array(), Charset.forName("GBK")));
-            controlParam.setSupervisionPlatAuthCode(new String(this.readBreak(byteBuf).array(), Charset.forName("GBK")));
-            controlParam.setHardVersion(new String(this.readBreak(byteBuf).array(), Charset.forName("GBK")));
-            controlParam.setFrameworkVersion(new String(this.readBreak(byteBuf).array(), Charset.forName("GBK")));
-            controlParam.setUrl(new String(this.readBreak(byteBuf).array(), Charset.forName("GBK")));
+            controlParam.setManufId(new String(ByteBufUtils.array(this.readBreak(byteBuf)), Charset.forName("GBK")));
+            controlParam.setSupervisionPlatAuthCode(new String(ByteBufUtils.array(this.readBreak(byteBuf)), Charset.forName("GBK")));
+            controlParam.setHardVersion(new String(ByteBufUtils.array(this.readBreak(byteBuf)), Charset.forName("GBK")));
+            controlParam.setFrameworkVersion(new String(ByteBufUtils.array(this.readBreak(byteBuf)), Charset.forName("GBK")));
+            controlParam.setUrl(new String(ByteBufUtils.array(this.readBreak(byteBuf)), Charset.forName("GBK")));
             controlParam.setConnTime(this.readBreak(byteBuf).readShort());
             this.controlParam = controlParam;
 

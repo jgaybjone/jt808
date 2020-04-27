@@ -1,13 +1,13 @@
 package com.avenger.jt808.base.pbody;
 
+import com.avenger.jt808.domain.Body;
 import com.avenger.jt808.domain.ReadingMessageType;
 import com.avenger.jt808.domain.WritingMessageType;
-import com.avenger.jt808.domain.Body;
+import com.avenger.jt808.util.ByteBufUtils;
 import com.avenger.jt808.util.CommonResult;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import lombok.Data;
-
-import java.nio.ByteBuffer;
 
 /**
  * Created by jg.wang on 2020/4/9.
@@ -32,11 +32,11 @@ public class CommonMsg implements Body {
 
     @Override
     public byte[] serialize() {
-        final ByteBuffer buffer = ByteBuffer.allocate(5);
-        buffer.putShort(respSerialNo);
-        buffer.putShort(respId);
-        buffer.put(result.getValue());
-        return buffer.array();
+        final ByteBuf buffer = Unpooled.buffer(5);
+        buffer.writeShort(respSerialNo);
+        buffer.writeShort(respId);
+        buffer.writeByte(result.getValue());
+        return ByteBufUtils.array(buffer);
     }
 
     @Override

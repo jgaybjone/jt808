@@ -2,6 +2,7 @@ package com.avenger.jt808.base.tbody;
 
 import com.avenger.jt808.domain.WritingMessageType;
 import com.avenger.jt808.domain.Body;
+import com.avenger.jt808.util.ByteBufUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.Data;
@@ -24,7 +25,7 @@ public class DeleteRouteMsg implements Body {
         final ByteBuf byteBuf = Unpooled.buffer(ids.size() + 1)
                 .writeByte(ids.size());
         ids.forEach(byteBuf::writeInt);
-        return byteBuf.array();
+        return ByteBufUtils.array(byteBuf);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.avenger.jt808.base.pbody;
 
 import com.avenger.jt808.domain.AdditionalAble;
+import com.avenger.jt808.util.ByteBufUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.Data;
@@ -17,7 +18,7 @@ public class SignalAdd implements Additional {
 
     @Override
     public byte[] serialize() {
-        return Unpooled.buffer(2).writeByte(getId()).writeByte(value).array();
+        return ByteBufUtils.array(Unpooled.buffer(2).writeByte(getId()).writeByte(value));
     }
 
     @Override

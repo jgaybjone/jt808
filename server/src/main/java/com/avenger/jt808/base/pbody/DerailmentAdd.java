@@ -2,6 +2,7 @@ package com.avenger.jt808.base.pbody;
 
 import com.avenger.jt808.domain.AdditionalAble;
 import com.avenger.jt808.enums.RegionType;
+import com.avenger.jt808.util.ByteBufUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.Data;
@@ -22,12 +23,11 @@ public class DerailmentAdd implements Additional {
 
     @Override
     public byte[] serialize() {
-        return Unpooled.buffer(6)
+        return ByteBufUtils.array(Unpooled.buffer(6)
                 .writeByte(getId())
                 .writeByte(regionType.getValue())
                 .writeInt(roundId)
-                .writeByte(enter ? 0x00 : 0x01)
-                .array();
+                .writeByte(enter ? 0x00 : 0x01));
     }
 
     @Override

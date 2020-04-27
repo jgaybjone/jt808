@@ -4,6 +4,7 @@ import com.avenger.jt808.domain.WritingMessageType;
 import com.avenger.jt808.domain.Body;
 import com.avenger.jt808.enums.ContactFlag;
 import com.avenger.jt808.enums.PhoneBookSettingType;
+import com.avenger.jt808.util.ByteBufUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.Data;
@@ -36,7 +37,7 @@ public class PhoneBookSettingMsg implements Body {
                 .writeBytes(contact.simNo.getBytes(Charset.forName("GBK")))
                 .writeByte(contact.name.length())
                 .writeBytes(contact.name.getBytes(Charset.forName("GBK"))));
-        return byteBuf.array();
+        return ByteBufUtils.array(byteBuf);
     }
 
     @Override

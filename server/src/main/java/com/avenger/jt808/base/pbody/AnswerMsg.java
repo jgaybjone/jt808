@@ -1,7 +1,8 @@
 package com.avenger.jt808.base.pbody;
 
-import com.avenger.jt808.domain.ReadingMessageType;
 import com.avenger.jt808.domain.Body;
+import com.avenger.jt808.domain.ReadingMessageType;
+import com.avenger.jt808.util.ByteBufUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.Data;
@@ -24,7 +25,7 @@ public class AnswerMsg implements Body {
 
     @Override
     public byte[] serialize() {
-        return Unpooled.buffer(3).writeShort(respSerialNo).writeByte(answerId).array();
+        return ByteBufUtils.array(Unpooled.buffer(3).writeShort(respSerialNo).writeByte(answerId));
     }
 
     @Override

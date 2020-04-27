@@ -30,8 +30,9 @@ public class MultimediaData extends MultimediaEventsMsg {
         final LocationAndAlarmMsg l = new LocationAndAlarmMsg();
         l.deSerialize(b);
         this.locationAndAlarmMsg = l;
-        final int len = byteBuf.readableBytes();
-        this.data = byteBuf.readBytes(len).array();
+        final byte[] bytes = new byte[byteBuf.readableBytes()];
+        byteBuf.readBytes(bytes);
+        this.data = bytes;
 
     }
 }

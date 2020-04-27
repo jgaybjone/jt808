@@ -105,7 +105,7 @@ public class TermParamsMsg implements Body {
         buffer.writeBytes(gbks4);
         buffer.writeByte(gnssProperties);
         buffer.writeByte(cellularProperties);
-        return buffer.array();
+        return ByteBufUtils.array(buffer);
 
     }
 

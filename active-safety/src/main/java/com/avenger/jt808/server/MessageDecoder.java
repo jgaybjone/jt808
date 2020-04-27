@@ -8,6 +8,7 @@ import com.avenger.jt808.domain.Body;
 import com.avenger.jt808.domain.Header;
 import com.avenger.jt808.domain.Message;
 import com.avenger.jt808.util.ByteBufUtils;
+import com.avenger.jt808.util.JsonUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
@@ -46,6 +47,7 @@ public class MessageDecoder extends ReplayingDecoder<Void> {
         }
         final ByteBuf buffer = Unpooled.buffer(100);
         final StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("7e");
         while (true) {
             final byte cu = in.readByte();
             final String hex = Integer.toHexString(cu);
@@ -69,9 +71,7 @@ public class MessageDecoder extends ReplayingDecoder<Void> {
                 buffer.writeByte(cu);
             }
         }
-        if (log.isDebugEnabled()) {
-            log.debug("input bytes : {}", stringBuilder.toString());
-        }
+
         final Header header = new Header(buffer);
         Body body;
         switch (header.getId()) {
@@ -92,6 +92,9 @@ public class MessageDecoder extends ReplayingDecoder<Void> {
         message.setHeader(header);
         message.setMsgBody(body);
         out.add(message);
+        if (log.isDebugEnabled()) {
+            log.debug("处理消息：{}, raw data: {}", JsonUtils.objToJsonStr(message), stringBuilder.toString());
+        }
     }
 
 }

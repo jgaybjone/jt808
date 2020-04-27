@@ -75,7 +75,7 @@ public class MessageDecoder extends ReplayingDecoder<Void> {
 //        buffer.writeByte(89);
 //        buffer.writeByte(88);
 //        System.out.println(buffer.readByte());
-//        final byte[] array = buffer.array();
+//        final byte[] array = ByteBufUtils.array(byteBuf);
 //        System.out.println(array);
 //    }
 }

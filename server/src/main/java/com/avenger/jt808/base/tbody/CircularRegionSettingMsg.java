@@ -4,6 +4,7 @@ import com.avenger.jt808.domain.WritingMessageType;
 import com.avenger.jt808.domain.Body;
 import com.avenger.jt808.enums.RegionSettingType;
 import com.avenger.jt808.util.ByteArrayUtils;
+import com.avenger.jt808.util.ByteBufUtils;
 import com.avenger.jt808.util.DateUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -48,7 +49,7 @@ public class CircularRegionSettingMsg implements Body {
                     .writeByte(circularRegion.getOverSpeedDuration());
 
         });
-        return byteBuf.array();
+        return ByteBufUtils.array(byteBuf);
     }
 
     @Override

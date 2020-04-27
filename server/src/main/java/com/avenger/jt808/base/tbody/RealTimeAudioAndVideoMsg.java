@@ -1,9 +1,10 @@
 package com.avenger.jt808.base.tbody;
 
-import com.avenger.jt808.domain.WritingMessageType;
 import com.avenger.jt808.domain.Body;
+import com.avenger.jt808.domain.WritingMessageType;
 import com.avenger.jt808.enums.BitstreamType;
 import com.avenger.jt808.enums.RealTimeDataType;
+import com.avenger.jt808.util.ByteBufUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.Data;
@@ -36,14 +37,14 @@ public class RealTimeAudioAndVideoMsg implements Body {
 
     @Override
     public byte[] serialize() throws UnsupportedEncodingException {
-        return Unpooled.buffer(30)
+        return ByteBufUtils.array(Unpooled.buffer(30)
                 .writeByte(ip.length())
                 .writeBytes(ip.getBytes(Charset.forName("GBK")))
                 .writeShort(tcpPort)
                 .writeShort(udpPort)
                 .writeByte(channel)
                 .writeByte(dataType.ordinal())
-                .writeByte(bitstreamType.ordinal()).array();
+                .writeByte(bitstreamType.ordinal()));
     }
 
     @Override

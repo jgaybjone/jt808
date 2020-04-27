@@ -4,6 +4,7 @@ import com.avenger.jt808.domain.WritingMessageType;
 import com.avenger.jt808.domain.Body;
 import com.avenger.jt808.enums.RegionSettingType;
 import com.avenger.jt808.util.ByteArrayUtils;
+import com.avenger.jt808.util.ByteBufUtils;
 import com.avenger.jt808.util.DateUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -47,7 +48,7 @@ public class RectangularRegionSettingMsg implements Body {
                 .writeBytes(ByteArrayUtils.bcdStrToBytes(DateUtil.toStringByFormat(circularRegion.getEndTime(), "yy-MM-dd-HH-mm-ss")))
                 .writeShort(circularRegion.getSpeedLimit())
                 .writeByte(circularRegion.getOverSpeedDuration()));
-        return byteBuf.array();
+        return ByteBufUtils.array(byteBuf);
     }
 
     @Override

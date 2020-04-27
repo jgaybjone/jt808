@@ -1,7 +1,7 @@
 package com.avenger.jt808.base.pbody;
 
-import com.avenger.jt808.domain.ReadingMessageType;
 import com.avenger.jt808.domain.Body;
+import com.avenger.jt808.domain.ReadingMessageType;
 import com.avenger.jt808.util.ByteArrayUtils;
 import io.netty.buffer.ByteBuf;
 import lombok.Data;
@@ -52,7 +52,9 @@ public class CanDataUploadMsg implements Body {
             canInfo.setAveraged((can & 0b00100000000000000000000000000000) > 0);
             canInfo.setStandardFramed((can & 0b01000000000000000000000000000000) == 0);
             canInfo.setChannel(can > 0 ? 0 : 1);
-            canInfo.setData(byteBuf.readBytes(8).array());
+            final byte[] d = new byte[8];
+            byteBuf.readBytes(d);
+            canInfo.setData(d);
             infos.add(canInfo);
         }
         this.canInfos = infos;
