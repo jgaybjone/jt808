@@ -19,6 +19,7 @@ public class ByteBufUtils {
     }
 
     public static byte[] array(ByteBuf buffer) {
+        buffer.resetReaderIndex();
         final byte[] bytes = new byte[buffer.readableBytes()];
         buffer.readBytes(bytes);
         return bytes;

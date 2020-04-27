@@ -53,7 +53,7 @@
         <!--        <AsyncLogger name="com.glp.fsp.interfaces.filter.PayloadLoggingFilter" level="debug">-->
         <!--            <AppenderRef ref="payloadLog"/>-->
         <!--        </AsyncLogger>-->
-        <AsyncRoot level="info" includeLocation="true">
+        <AsyncRoot level="debug" includeLocation="true">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="fullLog"/>
             <AppenderRef ref="errorLog"/>

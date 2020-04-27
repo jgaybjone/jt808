@@ -93,7 +93,7 @@ public class MessageDecoder extends ReplayingDecoder<Void> {
         message.setMsgBody(body);
         out.add(message);
         if (log.isDebugEnabled()) {
-            log.debug("处理消息：{}, raw data: {}", JsonUtils.objToJsonStr(message), stringBuilder.toString());
+            log.debug("处理消息：{}, raw data: {}", JsonUtils.objToJsonStr(message), stringBuilder.toString().replaceAll("ffffff", ""));
         }
     }
 

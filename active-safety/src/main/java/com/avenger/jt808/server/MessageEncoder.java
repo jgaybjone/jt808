@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MessageEncoder extends MessageToByteEncoder<Message> {
     @Override
     protected void encode(ChannelHandlerContext ctx, Message msg, ByteBuf out) throws Exception {
-        final ByteBuf buffer = Unpooled.buffer(10);
+        final ByteBuf buffer = Unpooled.buffer(200);
         final Header header = msg.getHeader();
         final WritingMessageType type = msg.getMsgBody().getClass().getAnnotation(WritingMessageType.class);
         header.setId(type.type());
