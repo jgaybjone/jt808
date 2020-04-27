@@ -32,6 +32,7 @@ public class SimpleChannelMessageHandler extends SimpleChannelInboundHandler<Mes
         final Channel channel = ctx.channel();
         final Publisher<Message> process = messageHandlerManager.process(msg);
         Consumer<Message> consumer = m -> {
+            log.info("处理完毕返回消息：{}", JsonUtils.objToJsonStr(m));
             if (channel.isActive()) {
                 channel.writeAndFlush(m);
             } else {
@@ -52,7 +53,7 @@ public class SimpleChannelMessageHandler extends SimpleChannelInboundHandler<Mes
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        log.error("channel is inactive id ：{} ", ctx.channel().hashCode());
+        log.info("channel is inactive id ：{} ", ctx.channel().hashCode());
         super.channelInactive(ctx);
     }
 
