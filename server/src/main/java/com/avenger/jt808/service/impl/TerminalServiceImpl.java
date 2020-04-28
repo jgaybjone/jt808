@@ -37,7 +37,10 @@ public class TerminalServiceImpl implements TerminalService {
         }
         final Example<Terminal> example = Example.of(Terminal.builder().termId(terminal.getTermId()).build());
         return terminalRepository.findOne(example)
-                .map(obj -> false)
+                .map(obj -> {
+                    terminal.setAuthCode(obj.getAuthCode());
+                    return false;
+                })
                 .orElseGet(() -> {
                     terminal.setAuthCode(UUID.randomUUID().toString());
                     terminalRepository.save(terminal);

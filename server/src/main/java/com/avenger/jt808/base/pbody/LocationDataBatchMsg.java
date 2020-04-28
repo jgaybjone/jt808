@@ -1,8 +1,9 @@
 package com.avenger.jt808.base.pbody;
 
-import com.avenger.jt808.domain.ReadingMessageType;
 import com.avenger.jt808.domain.Body;
+import com.avenger.jt808.domain.ReadingMessageType;
 import io.netty.buffer.ByteBuf;
+import lombok.Data;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import java.util.List;
  * Description: 定位数据批量上传
  */
 @ReadingMessageType(type = 0x0704)
+@Data
 public class LocationDataBatchMsg implements Body {
 
     private byte type;
