@@ -19,14 +19,6 @@
                 <SizeBasedTriggeringPolicy size="200MB"/>
             </Policies>
         </RollingFile>
-        <RollingFile name="payloadLog" fileName="${sys:log.path}/${project.name}-payload.log"
-                     filePattern="${sys:log.path}/$${date:yyyy-MM}/${project.name}-%d{yyyy-MM-dd}-%i.log.gz">
-            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS}:%4p %t (%c{2}:%L) - %m%n"/>
-            <Policies>
-                <TimeBasedTriggeringPolicy/>
-                <SizeBasedTriggeringPolicy size="200MB"/>
-            </Policies>
-        </RollingFile>
         <RollingFile name="errorLog" fileName="${sys:log.path}/${project.name}-error.log"
                      filePattern="${sys:log.path}/$${date:yyyy-MM}/${project.name}-%d{yyyy-MM-dd}-%i-error.log.gz">
             <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS}:%4p [%t] (%c{2}:%L) - %m%n"/>
