@@ -51,9 +51,14 @@ public class RegisterMsgHandler implements MessageHandler {
                             .simNo(h.getSimNo())
                             .build();
                     final boolean result = terminalService.register(terminal);
+                    if (result) {
+                        log.info("注册成功");
+                    } else {
+                        log.info("已存在终端，注册失败");
+                    }
                     final RegisterRespMsg body = new RegisterRespMsg();
                     body.setAuthCode(terminal.getAuthCode());
-                    body.setResult(result ? RegisterResult.OK : RegisterResult.TERMINAL_REGISTERED);
+                    body.setResult(RegisterResult.OK);
                     body.setRespSerial(h.getSerialNo());
                     final Header header = new Header(h.getSimNo(), false, EncryptionForm.NOTHING);
                     final Message resp = new Message();
