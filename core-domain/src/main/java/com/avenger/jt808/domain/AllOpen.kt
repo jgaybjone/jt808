@@ -14,9 +14,8 @@ annotation class NoArg
 annotation class AllOpenAndNoArg
 
 
-annotation class ReadingMessageType(val type: Short)
+annotation class ReadingMessageType(val type: Short, val needReply: Boolean = false)
 
-
-annotation class WritingMessageType(val type: Short)
+annotation class WritingMessageType(val type: Short, val needReply: Boolean = false)
 
 annotation class AdditionalAble(val type: Byte)

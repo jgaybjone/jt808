@@ -15,6 +15,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -37,6 +38,8 @@ public class TermServer {
     private final MessageFactory messageFactory;
     @NonNull
     private final MessageHandlerManager messageHandlerManager;
+    @NonNull
+    private final ReactiveRedisTemplate reactiveRedisTemplate;
 
     EventLoopGroup bossGroup;
     EventLoopGroup workerGroup;
@@ -61,7 +64,7 @@ public class TermServer {
                             ch.pipeline().addLast("idleStateHandler", new IdleStateHandler(20, 0, 0, TimeUnit.MINUTES));
                             ch.pipeline().addLast("decoder", new MessageDecoder(messageFactory));
                             ch.pipeline().addLast(new SimpleChannelMessageHandler(messageHandlerManager));
-                            ch.pipeline().addLast(new MessageEncoder());
+                            ch.pipeline().addLast(new MessageEncoder(reactiveRedisTemplate));
                             ch.pipeline().addLast("encoder", new ByteArrayEncoder());
                             //handler.setConnctionMap(connctionMap);
                         }

@@ -7,19 +7,31 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.ReactiveRedisTemplate;
+
+import java.time.Duration;
 
 /**
  * Created by jg.wang on 2020/4/9.
  * Description: 消息序列化处理
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 @Slf4j
+@AllArgsConstructor
 public class MessageEncoder extends MessageToByteEncoder<Message> {
+
+    private final ReactiveRedisTemplate reactiveRedisTemplate;
+
     @Override
     protected void encode(ChannelHandlerContext ctx, Message msg, ByteBuf out) throws Exception {
         final ByteBuf buffer = Unpooled.buffer(200);
         final Header header = msg.getHeader();
         final WritingMessageType type = msg.getMsgBody().getClass().getAnnotation(WritingMessageType.class);
+        if (type.needReply()) {
+            reactiveRedisTemplate.opsForValue().set(header.getSimNo() + "::" + header.getSerialNo(), msg, Duration.ofMinutes(2));
+        }
         header.setId(type.type());
         final byte[] b = msg.getMsgBody().serialize();
         buffer.writeBytes(header.getRaw((byte) b.length));

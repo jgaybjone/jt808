@@ -8,7 +8,7 @@ import io.netty.buffer.ByteBuf;
  * Created by jg.wang on 2020/4/9.
  * Description: 查询终端参数 0x8104
  */
-@WritingMessageType(type = 0x8104 - 0x10000)
+@WritingMessageType(type = 0x8104 - 0x10000, needReply = true)
 public class SettingQueryAllMsg implements Body {
 
     @Override

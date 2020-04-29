@@ -9,12 +9,14 @@ import io.netty.buffer.Unpooled;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 /**
  * Created by jg.wang on 2020/4/9.
  * Description:
  */
 @Getter
-public class Header {
+public class Header implements Serializable {
     /**
      * 消息类型
      */
