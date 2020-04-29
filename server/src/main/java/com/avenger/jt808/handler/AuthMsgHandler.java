@@ -54,7 +54,7 @@ public class AuthMsgHandler implements MessageHandler {
                     if (m != null) {
                         final SettingQueryAllMsg settingQueryAllMsg = new SettingQueryAllMsg();
                         final Message m2 = new Message();
-                        final Header header = new Header(((byte) 0x8104), m.getHeader().getSimNo(), false, EncryptionForm.NOTHING);
+                        final Header header = new Header((byte) (0x8104 - 0x10000), m.getHeader().getSimNo(), false, EncryptionForm.NOTHING);
                         m2.setHeader(header);
                         m2.setMsgBody(settingQueryAllMsg);
                         TermConnManager.sendMessage(m2);

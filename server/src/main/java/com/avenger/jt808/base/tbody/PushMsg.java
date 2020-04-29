@@ -1,7 +1,7 @@
 package com.avenger.jt808.base.tbody;
 
-import com.avenger.jt808.domain.WritingMessageType;
 import com.avenger.jt808.domain.Body;
+import com.avenger.jt808.domain.WritingMessageType;
 import io.netty.buffer.ByteBuf;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +11,7 @@ import lombok.ToString;
  * Created by jg.wang on 2020/4/11.
  * Description:
  */
-@WritingMessageType(type = ((byte) 0x8300))
+@WritingMessageType(type = (0x8300 - 0x10000))
 @ToString
 public class PushMsg implements Body {
 

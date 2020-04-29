@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
  * Created by jg.wang on 2020/4/19.
  * Description:
  */
-@WritingMessageType(type = ((byte) 0x9202))
+@WritingMessageType(type = (0x9202 - 0x10000))
 @Data
 public class VideoRelayControlMsg implements Body {
 

@@ -16,7 +16,7 @@ import java.nio.charset.Charset;
  * Description: 电话回拨消息
  */
 @ToString
-@WritingMessageType(type = ((byte) 0x8400))
+@WritingMessageType(type = (0x8400 - 0x10000))
 public class CallbackMsg implements Body {
 
     private byte flag = 0;

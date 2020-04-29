@@ -13,7 +13,7 @@ import java.nio.charset.Charset;
  * Created by jg.wang on 2020/4/11.
  * Description:
  */
-@WritingMessageType(type = ((byte) 0x8304))
+@WritingMessageType(type = (0x8304 - 0x10000))
 @Data
 public class MessageServiceMsg implements Body {
 

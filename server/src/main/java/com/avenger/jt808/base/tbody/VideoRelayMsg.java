@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
  * Created by jg.wang on 2020/4/19.
  * Description: 录像回放请求
  */
-@WritingMessageType(type = ((byte) 0x9201))
+@WritingMessageType(type = (0x9201 - 0x10000))
 @Data
 public class VideoRelayMsg implements Body {
 

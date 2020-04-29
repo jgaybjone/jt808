@@ -1,7 +1,7 @@
 package com.avenger.jt808.base.tbody;
 
-import com.avenger.jt808.domain.WritingMessageType;
 import com.avenger.jt808.domain.Body;
+import com.avenger.jt808.domain.WritingMessageType;
 import com.avenger.jt808.util.ByteBufUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -18,7 +18,7 @@ import java.util.List;
  * Created by jg.wang on 2020/4/11.
  * Description:
  */
-@WritingMessageType(type = ((byte) 0x8302))
+@WritingMessageType(type = (0x8302 - 0x10000))
 public class AskQuestionsMsg implements Body {
 
     private byte flag = 0;

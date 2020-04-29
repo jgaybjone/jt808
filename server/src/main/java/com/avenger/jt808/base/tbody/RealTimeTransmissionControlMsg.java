@@ -16,7 +16,7 @@ import java.io.UnsupportedEncodingException;
  * Created by jg.wang on 2020/4/18.
  * Description:
  */
-@WritingMessageType(type = ((byte) 0x9102))
+@WritingMessageType(type = (0x9102 - 0x10000))
 @Data
 public class RealTimeTransmissionControlMsg implements Body {
 

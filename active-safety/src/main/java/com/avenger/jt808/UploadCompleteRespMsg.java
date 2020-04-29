@@ -15,7 +15,7 @@ import java.util.List;
  * Created by jg.wang on 2020/4/24.
  * Description: 文件上传完成消息应答
  */
-@WritingMessageType(type = ((byte) 0x9212))
+@WritingMessageType(type = (0x9212 - 0x10000))
 @Data
 public class UploadCompleteRespMsg implements Body {
 

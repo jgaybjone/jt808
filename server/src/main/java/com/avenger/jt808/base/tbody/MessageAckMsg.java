@@ -13,7 +13,7 @@ import lombok.ToString;
  * Created by jg.wang on 2020/4/11.
  * Description:
  */
-@WritingMessageType(type = ((byte) 0x8203))
+@WritingMessageType(type = (0x8203 - 0x10000))
 @ToString
 public class MessageAckMsg implements Body {
 

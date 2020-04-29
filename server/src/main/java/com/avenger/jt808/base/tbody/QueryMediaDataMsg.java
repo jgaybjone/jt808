@@ -17,7 +17,7 @@ import java.time.format.DateTimeFormatter;
  * Created by jg.wang on 2020/4/13.
  * Description:
  */
-@WritingMessageType(type = ((byte) 0x8802))
+@WritingMessageType(type = (0x8802 - 0x10000))
 @Data
 public class QueryMediaDataMsg implements Body {
 

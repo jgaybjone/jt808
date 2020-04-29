@@ -16,7 +16,7 @@ import java.nio.charset.Charset;
  * Created by jg.wang on 2020/4/18.
  * Description: 实时音视频传输指令
  */
-@WritingMessageType(type = ((byte) 0x9101))
+@WritingMessageType(type = (0x9101 - 0x10000))
 @Data
 public class RealTimeAudioAndVideoMsg implements Body {
 

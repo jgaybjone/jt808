@@ -11,7 +11,7 @@ import lombok.Data;
  * Created by jg.wang on 2020/4/13.
  * Description:数据上行透传
  */
-@ReadingMessageType(type = ((byte) 0x0900))
+@ReadingMessageType(type = 0x0900)
 @Data
 public class DataUpPenetrationMsg implements Body {
     /**

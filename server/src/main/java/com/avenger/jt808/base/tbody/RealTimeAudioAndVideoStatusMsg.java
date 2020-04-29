@@ -1,7 +1,7 @@
 package com.avenger.jt808.base.tbody;
 
-import com.avenger.jt808.domain.WritingMessageType;
 import com.avenger.jt808.domain.Body;
+import com.avenger.jt808.domain.WritingMessageType;
 import io.netty.buffer.ByteBuf;
 import lombok.Data;
 
@@ -9,7 +9,7 @@ import lombok.Data;
  * Created by jg.wang on 2020/4/18.
  * Description: 实时音视频状态通知
  */
-@WritingMessageType(type = ((byte) 0x9105))
+@WritingMessageType(type = (0x9105 - 0x10000))
 @Data
 public class RealTimeAudioAndVideoStatusMsg implements Body {
 

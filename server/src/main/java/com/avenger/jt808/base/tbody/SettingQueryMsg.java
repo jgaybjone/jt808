@@ -15,7 +15,7 @@ import java.util.List;
  * Created by jg.wang on 2020/4/9.
  * Description: 查询终端参数
  */
-@WritingMessageType(type = (byte) 0x8106)
+@WritingMessageType(type =  0x8106- 0x10000)
 @Data
 public class SettingQueryMsg implements Body {
 

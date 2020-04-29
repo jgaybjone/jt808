@@ -14,7 +14,7 @@ import java.nio.charset.Charset;
  * Created by jg.wang on 2020/4/10.
  * Description: 终端控制8105
  */
-@WritingMessageType(type = (byte) 0x8105)
+@WritingMessageType(type = 0x8105 - 0x10000)
 @Data
 public class TerminalControlMsg implements Body {
 

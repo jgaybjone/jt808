@@ -8,7 +8,7 @@ import io.netty.buffer.ByteBuf;
  * Created by jg.wang on 2020/4/10.
  * Description:  todo 下发升级数据包待开发
  */
-@WritingMessageType(type = (byte) 0x8108)
+@WritingMessageType(type =0x8108- 0x10000)
 public class UpdatePackageMsg implements Body {
 
 

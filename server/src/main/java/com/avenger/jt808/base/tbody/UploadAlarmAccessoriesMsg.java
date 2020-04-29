@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
  * 消息 ID:0x9208。
  * 报文类型:信令数据报文。 平台接收到带有附件的报警/事件信息后，向终端下发附件上传指令
  */
-@WritingMessageType(type = ((byte) 0x9208))
+@WritingMessageType(type = (0x9208 - 0x10000))
 @Data
 public class UploadAlarmAccessoriesMsg implements Body {
 

@@ -1,14 +1,14 @@
 package com.avenger.jt808.base.tbody;
 
-import com.avenger.jt808.domain.WritingMessageType;
 import com.avenger.jt808.domain.Body;
+import com.avenger.jt808.domain.WritingMessageType;
 import io.netty.buffer.ByteBuf;
 
 /**
  * Created by jg.wang on 2020/4/9.
  * Description: 查询终端参数
  */
-@WritingMessageType(type = (byte) 0x8107)
+@WritingMessageType(type = (short) 0x8107)
 public class QueryTermParamsMsg implements Body {
 
     @Override
@@ -20,4 +20,5 @@ public class QueryTermParamsMsg implements Body {
     public void deSerialize(ByteBuf byteBuf) {
 
     }
+
 }

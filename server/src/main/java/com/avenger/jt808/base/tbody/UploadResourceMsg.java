@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
  * Created by jg.wang on 2020/4/19.
  * Description: FTP文件上传
  */
-@WritingMessageType(type = ((byte) 0x9206))
+@WritingMessageType(type = (0x9206 - 0x10000))
 @Data
 public class UploadResourceMsg implements Body {
 

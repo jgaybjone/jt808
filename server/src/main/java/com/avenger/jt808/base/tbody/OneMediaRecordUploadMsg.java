@@ -11,7 +11,7 @@ import lombok.Data;
  * Created by jg.wang on 2020/4/13.
  * Description: 单条存储多媒体数据检索上传
  */
-@WritingMessageType(type = ((byte) 0x8805))
+@WritingMessageType(type = (0x8805 - 0x10000))
 @Data
 public class OneMediaRecordUploadMsg implements Body {
 

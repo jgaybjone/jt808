@@ -17,7 +17,7 @@ import java.time.format.DateTimeFormatter;
  * Created by jg.wang on 2020/4/13.
  * Description: 存储多媒体数据上传
  */
-@WritingMessageType(type = ((byte) 0x8803))
+@WritingMessageType(type = (0x8803 - 0x10000))
 @Data
 public class MultimediaDataRecordUploadMsg implements Body {
 

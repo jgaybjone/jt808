@@ -1,7 +1,7 @@
 package com.avenger.jt808.base.tbody;
 
-import com.avenger.jt808.domain.WritingMessageType;
 import com.avenger.jt808.domain.Body;
+import com.avenger.jt808.domain.WritingMessageType;
 import io.netty.buffer.ByteBuf;
 import lombok.Data;
 
@@ -11,7 +11,7 @@ import java.io.UnsupportedEncodingException;
  * Created by jg.wang on 2020/4/22.
  * Description: 云台焦距调整
  */
-@WritingMessageType(type = ((byte) 0x9302))
+@WritingMessageType(type = ((short) 0x9302))
 @Data
 public class PanTiltFocusAdjustmentMsg implements Body {
 

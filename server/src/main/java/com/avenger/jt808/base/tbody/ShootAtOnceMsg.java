@@ -12,7 +12,7 @@ import lombok.Data;
  * Created by jg.wang on 2020/4/13.
  * Description: 摄像头立即拍摄命令
  */
-@WritingMessageType(type = ((byte) 0x8801))
+@WritingMessageType(type = (0x8801 - 0x10000))
 @Data
 public class ShootAtOnceMsg implements Body {
     /**

@@ -13,7 +13,7 @@ import java.io.UnsupportedEncodingException;
  * Created by jg.wang on 2020/4/22.
  * Description: 云台旋转命令
  */
-@WritingMessageType(type = ((byte) 0x9301))
+@WritingMessageType(type = ((short) 0x9301))
 @Data
 public class PanTiltRotateMsg implements Body {
 

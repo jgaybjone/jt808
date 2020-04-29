@@ -1,7 +1,7 @@
 package com.avenger.jt808.base.tbody;
 
-import com.avenger.jt808.domain.WritingMessageType;
 import com.avenger.jt808.domain.Body;
+import com.avenger.jt808.domain.WritingMessageType;
 import com.avenger.jt808.util.ByteArrayUtils;
 import com.avenger.jt808.util.ByteBufUtils;
 import com.avenger.jt808.util.DateUtil;
@@ -18,7 +18,7 @@ import java.util.List;
  * Created by jg.wang on 2020/4/11.
  * Description: 设置路线消息体
  */
-@WritingMessageType(type = ((byte) 0x8606))
+@WritingMessageType(type = (0x8606 - 0x10000))
 @Data
 public class RoutesSettingMsg implements Body {
 

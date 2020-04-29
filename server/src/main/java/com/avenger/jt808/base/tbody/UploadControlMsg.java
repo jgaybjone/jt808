@@ -13,7 +13,7 @@ import java.io.UnsupportedEncodingException;
  * Created by jg.wang on 2020/4/19.
  * Description:
  */
-@WritingMessageType(type = ((byte) 0x9207))
+@WritingMessageType(type = (0x9207 - 0x10000))
 @Data
 public class UploadControlMsg implements Body {
 

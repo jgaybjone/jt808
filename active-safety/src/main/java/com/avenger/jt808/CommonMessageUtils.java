@@ -15,7 +15,7 @@ public class CommonMessageUtils {
 
     public static Message success(Header h) {
         final Message message = new Message();
-        final Header header = new Header(((byte) 0x8001), h.getSimNo(), false, EncryptionForm.NOTHING);
+        final Header header = new Header(((short) 0x8001), h.getSimNo(), false, EncryptionForm.NOTHING);
         message.setHeader(header);
         final CommonMsg commonMsg = new CommonMsg();
         commonMsg.setRespId(h.getId());

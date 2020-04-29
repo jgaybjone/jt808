@@ -1,7 +1,7 @@
 package com.avenger.jt808.base.tbody;
 
-import com.avenger.jt808.domain.WritingMessageType;
 import com.avenger.jt808.domain.Body;
+import com.avenger.jt808.domain.WritingMessageType;
 import io.netty.buffer.ByteBuf;
 import lombok.AllArgsConstructor;
 
@@ -9,7 +9,7 @@ import lombok.AllArgsConstructor;
  * Created by jg.wang on 2020/4/11.
  * Description:
  */
-@WritingMessageType(type = ((byte) 0x8500))
+@WritingMessageType(type = (0x8500 - 0x10000))
 @AllArgsConstructor
 public class VehicleControlMsg implements Body {
 

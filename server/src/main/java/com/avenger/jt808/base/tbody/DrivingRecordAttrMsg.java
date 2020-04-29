@@ -11,7 +11,7 @@ import lombok.Data;
  * Created by jg.wang on 2020/4/12.
  * Description:
  */
-@WritingMessageType(type = ((byte) 0x8701))
+@WritingMessageType(type = (0x8701 - 0x10000))
 @Data
 public class DrivingRecordAttrMsg implements Body {
 
