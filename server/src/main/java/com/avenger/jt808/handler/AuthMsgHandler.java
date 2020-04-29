@@ -20,7 +20,7 @@ import java.util.Optional;
 
 /**
  * Created by jg.wang on 2020/4/27.
- * Description:
+ * Description: 鉴权消息处理
  */
 @Component
 @RequiredArgsConstructor
