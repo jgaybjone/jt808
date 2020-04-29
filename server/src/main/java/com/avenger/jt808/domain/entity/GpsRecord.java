@@ -10,7 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 /**
@@ -30,10 +29,10 @@ public class GpsRecord implements Serializable {
     @Column(name = "sim_no", nullable = true, length = 20)
     private String simNo;
     @Column(name = "longitude", nullable = true, precision = 2)
-    private BigDecimal longitude;
+    private Double longitude;
     @Column(name = "latitude", nullable = true, precision = 2)
-    private BigDecimal latitude;
-    @Column(name = "alarmFlag", nullable = true)
+    private Double latitude;
+    @Column(name = "alarm_flag", nullable = true)
     private Integer alarmFlag;
     @Column(name = "vehicle_status", nullable = true)
     private Integer vehicleStatus;
@@ -45,7 +44,7 @@ public class GpsRecord implements Serializable {
     private Integer direction;
     @Column(name = "add_mileage", nullable = true)
     private Integer addMileage;
-    @Column(name = "add_fuelQuantity", nullable = true)
+    @Column(name = "add_fuel_quantity", nullable = true)
     private Integer addFuelQuantity;
     @Column(name = "add_speed", nullable = true)
     private Integer addSpeed;
