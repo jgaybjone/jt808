@@ -34,6 +34,10 @@ public class AuthMsgHandler implements MessageHandler {
         return 0x0102;
     }
 
+    /**
+     * @param message 0x0102 终端认证消息
+     * @return 0x8001 通用应答，成功后发送查询终端参数
+     */
     @Override
     public Publisher<Message> process(Message message) {
         return Mono.justOrEmpty(Optional.ofNullable(message)

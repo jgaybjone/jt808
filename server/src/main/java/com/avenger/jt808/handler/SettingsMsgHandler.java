@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 /**
  * Created by jg.wang on 2020/4/29.
- * Description:
+ * Description: 配置查询保存
  */
 @SuppressWarnings("rawtypes")
 @Component
