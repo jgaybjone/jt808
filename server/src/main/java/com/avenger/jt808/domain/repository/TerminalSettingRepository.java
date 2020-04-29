@@ -9,4 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface TerminalSettingRepository extends JpaRepository<TerminalSetting, Long> {
     void deleteBySimNo(String simNo);
+
+    boolean existsBySimNo(String simNo);
 }
