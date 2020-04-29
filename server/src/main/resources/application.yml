@@ -32,6 +32,8 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+
   redis:
     host: 121.40.163.240
     port: 26379
