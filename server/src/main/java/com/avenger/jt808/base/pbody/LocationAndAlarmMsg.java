@@ -1,15 +1,14 @@
 package com.avenger.jt808.base.pbody;
 
 import com.avenger.jt808.base.MessageFactory;
-import com.avenger.jt808.domain.ReadingMessageType;
 import com.avenger.jt808.domain.Body;
+import com.avenger.jt808.domain.ReadingMessageType;
 import com.avenger.jt808.util.ApplicationContextUtils;
 import com.avenger.jt808.util.ByteArrayUtils;
-import com.avenger.jt808.util.DateUtil;
 import io.netty.buffer.ByteBuf;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -42,7 +41,7 @@ public class LocationAndAlarmMsg implements Body {
     /**
      * 海拔高度，单位为米(m)
      */
-    private short altitude;
+    private int altitude;
     /**
      * 1/10km/h
      */
@@ -56,7 +55,7 @@ public class LocationAndAlarmMsg implements Body {
      * YY-MM-DD-hh-mm-ss
      * (GMT+8 时间，本标准中之后涉 及的时间均采用此时区)
      */
-    private Date time;
+    private LocalDateTime time;
 
     private AlarmDetail alarmDetail;
 
@@ -85,10 +84,11 @@ public class LocationAndAlarmMsg implements Body {
         this.setStatus(byteBuf.readInt());
         this.latitude = byteBuf.readInt();
         this.longitude = byteBuf.readInt();
-        this.altitude = byteBuf.readShort();
+        this.altitude = byteBuf.readUnsignedShort();
         this.speed = byteBuf.readShort();
         this.direction = byteBuf.readShort();
-        this.time = DateUtil.stringToDatetime("20" + ByteArrayUtils.toBcdString(byteBuf, 6), "yyyyMMddHHmmss");
+        this.time = ByteArrayUtils.bcdToDate(byteBuf, 6);
+//        this.time = DateUtil.stringToDatetime("20" + ByteArrayUtils.toBcdString(byteBuf, 6), "yyyyMMddHHmmss");
         this.additionals = ApplicationContextUtils.getBean(MessageFactory.class).parse(byteBuf);
     }
 }

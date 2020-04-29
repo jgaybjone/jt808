@@ -2,6 +2,7 @@ package com.avenger.jt808.base.pbody;
 
 import com.avenger.jt808.domain.AdditionalAble;
 import io.netty.buffer.ByteBuf;
+import lombok.Getter;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import java.util.List;
 @AdditionalAble(type = 0x15)
 public class LossOfVideoSignalAdd implements Additional {
 
+    @Getter
     private int raw;
 
     public List<Integer> getChannelId() {

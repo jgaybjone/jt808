@@ -30,7 +30,9 @@ public class MessageEncoder extends MessageToByteEncoder<Message> {
         final Header header = msg.getHeader();
         final WritingMessageType type = msg.getMsgBody().getClass().getAnnotation(WritingMessageType.class);
         if (type.needReply()) {
-            reactiveRedisTemplate.opsForValue().set(header.getSimNo() + "::" + header.getSerialNo(), msg, Duration.ofMinutes(2));
+            reactiveRedisTemplate.opsForValue()
+                    .set(header.getSimNo() + "::" + header.getSerialNo(), msg, Duration.ofMinutes(2))
+                    .subscribe();
         }
         header.setId(type.type());
         final byte[] b = msg.getMsgBody().serialize();

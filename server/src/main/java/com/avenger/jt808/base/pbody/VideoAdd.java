@@ -2,6 +2,7 @@ package com.avenger.jt808.base.pbody;
 
 import com.avenger.jt808.domain.AdditionalAble;
 import io.netty.buffer.ByteBuf;
+import lombok.Getter;
 
 import java.io.UnsupportedEncodingException;
 
@@ -12,6 +13,7 @@ import java.io.UnsupportedEncodingException;
 @AdditionalAble(type = 0x14)
 public class VideoAdd implements Additional {
 
+    @Getter
     private int raw;
 
 
