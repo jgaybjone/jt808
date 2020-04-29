@@ -47,17 +47,15 @@ public class SettingsMsgHandler implements MessageHandler {
                             final List<SettingParams> settingParams = b.getSettingParams();
                             if (!CollectionUtils.isEmpty(settingParams)) {
                                 terminalSettingService.crudAndConsumer(repository -> {
-                                    if (!repository.existsBySimNo(h.getSimNo())) {
-                                        final List<TerminalSetting> terminalSettings = settingParams.stream()
-                                                .map(set -> TerminalSetting.builder()
-                                                        .simNo(h.getSimNo())
-                                                        .settingId(set.getId())
-                                                        .value(String.valueOf(set.getParam()).replaceAll("\0", ""))
-                                                        .createdAt(Timestamp.valueOf(LocalDateTime.now()))
-                                                        .build())
-                                                .collect(Collectors.toList());
-                                        repository.saveAll(terminalSettings);
-                                    }
+                                    final List<TerminalSetting> terminalSettings = settingParams.stream()
+                                            .map(set -> TerminalSetting.builder()
+                                                    .simNo(h.getSimNo())
+                                                    .settingId(set.getId())
+                                                    .value(String.valueOf(set.getParam()).replaceAll("\0", ""))
+                                                    .createdAt(Timestamp.valueOf(LocalDateTime.now()))
+                                                    .build())
+                                            .collect(Collectors.toList());
+                                    repository.saveAll(terminalSettings);
                                 });
                             }
                             return null;
