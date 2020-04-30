@@ -28,6 +28,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-rsocket'
     implementation 'org.hibernate.validator:hibernate-validator:6.1.2.Final'
     implementation group: 'org.apache.commons', name: 'commons-pool2', version: '2.6.0'
+    implementation group: 'commons-io', name: 'commons-io', version: '2.6'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'org.postgresql:postgresql'
     annotationProcessor 'org.projectlombok:lombok'
