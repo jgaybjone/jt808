@@ -73,8 +73,9 @@ public class MultimediaDataHandler implements MessageHandler {
                     stringRedisTemplate.opsForHash().put(key, "" + number, fileName);
                     if (1 == number) {
                         stringRedisTemplate.expire(key, 20, TimeUnit.MINUTES);
-                        stringRedisTemplate.opsForValue().set(key + "_file", uploadDir + h.getSimNo() + "_"
-                                        + h.getId() + "_" + h.getPacketsCount() + "_" + System.currentTimeMillis() + "." + b.getFormat().name().toLowerCase(),
+                        final String url = uploadDir + h.getSimNo() + "_"
+                                + h.getId() + "_" + h.getPacketsCount() + "_" + System.currentTimeMillis() + "." + b.getFormat().name().toLowerCase();
+                        stringRedisTemplate.opsForValue().set(key + "_file", url,
                                 Duration.ofMinutes(20));
                         GpsRecord record = LocationAndAlarmMsgHandler.fetch(h, b.getLocationAndAlarmMsg());
                         Multimedia multimedia = Multimedia
@@ -86,8 +87,7 @@ public class MultimediaDataHandler implements MessageHandler {
                                 .eventType(b.getEventItem())
                                 .channel(((int) b.getChannelId()))
                                 .time(Timestamp.valueOf(b.getLocationAndAlarmMsg().getTime()))
-                                .fileUrl(uploadDir + h.getSimNo() + "_"
-                                        + h.getId() + "_" + h.getPacketsCount() + "." + b.getFormat().name().toLowerCase())
+                                .fileUrl(url)
                                 .build();
                         multimediaService.save(multimedia, record);
                     }
