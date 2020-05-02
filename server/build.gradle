@@ -30,8 +30,10 @@ dependencies {
     implementation group: 'org.apache.commons', name: 'commons-pool2', version: '2.6.0'
     implementation group: 'commons-io', name: 'commons-io', version: '2.6'
     compileOnly 'org.projectlombok:lombok'
+    testImplementation 'org.projectlombok:lombok'
     runtimeOnly 'org.postgresql:postgresql'
     annotationProcessor 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }

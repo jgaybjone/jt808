@@ -111,7 +111,11 @@ public class MessageFactory implements ApplicationContextAware {
         final Body body = bodyClass.newInstance();
         final byte[] bytes = new byte[header.getBodySize()];
         byteBuf.readBytes(bytes);
-        body.deSerialize(Unpooled.wrappedBuffer(bytes));
+        if (header.isPacket() && header.getPacketNumber() > 1) {
+            body.deSerializeSubpackage(Unpooled.wrappedBuffer(bytes));
+        } else {
+            body.deSerialize(Unpooled.wrappedBuffer(bytes));
+        }
         final Message message = new Message();
         message.setHeader(header);
         message.setMsgBody(body);

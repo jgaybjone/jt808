@@ -11,7 +11,7 @@ public enum MediaFormat {
     TIF,
     MP3,
     WAV,
-    WM,
+    WMV,
     OTHER;
 
     public static MediaFormat valueOf(byte value) {

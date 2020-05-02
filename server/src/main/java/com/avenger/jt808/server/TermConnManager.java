@@ -47,6 +47,10 @@ public class TermConnManager {
         }
     }
 
+    public static Channel getChannel(String simNo) {
+        return CHANNEL_HOLDER.get(simNo);
+    }
+
     public static String simNoOnChannel(Channel channel) {
         return channel.attr(SIM_KEY).get();
     }

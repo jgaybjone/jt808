@@ -14,4 +14,8 @@ public interface ByteSerialize {
 
     void deSerialize(ByteBuf byteBuf);
 
+    default void deSerializeSubpackage(ByteBuf byteBuf) {
+
+    }
+
 }

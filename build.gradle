@@ -14,13 +14,14 @@ allprojects {
         mavenCentral()
     }
 
-    group = 'com.avenger'
-    version = '1.0-SNAPSHOT'
-    sourceCompatibility = '1.8'
-    test.enabled = false
+
 }
 
 subprojects {
     apply plugin: 'org.jetbrains.kotlin.jvm'
     apply plugin: 'java'
+    group = 'com.avenger'
+    version = '1.0-SNAPSHOT'
+    sourceCompatibility = '1.8'
+    test.enabled = false
 }

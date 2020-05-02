@@ -45,5 +45,7 @@ public class Multimedia implements Serializable {
     private Timestamp time;
     @Column(name = "sim_no", nullable = true)
     private String simNo;
+    @Column(name = "file_url", nullable = true)
+    private String fileUrl;
 
 }

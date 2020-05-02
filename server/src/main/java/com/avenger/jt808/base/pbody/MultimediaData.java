@@ -35,4 +35,11 @@ public class MultimediaData extends MultimediaEventsMsg {
         this.data = bytes;
 
     }
+
+    @Override
+    public void deSerializeSubpackage(ByteBuf byteBuf) {
+        final byte[] bytes = new byte[byteBuf.readableBytes()];
+        byteBuf.readBytes(bytes);
+        this.data = bytes;
+    }
 }

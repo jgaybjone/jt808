@@ -45,27 +45,27 @@ public class MessageDecoder extends ReplayingDecoder<Void> {
                 break;
             } else if (cu == 0x7D) {//处理转义
                 final byte cu2 = in.readByte();
-                final String hex2 = Integer.toHexString(cu2);
-                if (hex2.length() < 2) {
-                    stringBuilder.append(0);
-                }
-                stringBuilder.append(hex2);
                 if (cu2 == 0x02) {
                     buffer.writeByte(0x7E);
+                    stringBuilder.append("7E");
                 } else if (cu2 == 0x01) {
                     buffer.writeByte(0x7D);
+                    stringBuilder.append("7D");
                 } else {
-                    buffer.writeByte(cu).writeByte(cu2);
+                    log.warn("解码错误0x7D后面没有01也没有02");
                 }
             } else {
                 buffer.writeByte(cu);
             }
         }
+        if (log.isDebugEnabled()) {
+            log.debug(" raw data: {}", stringBuilder.toString().replaceAll("ffffff", ""));
+        }
         final Message message = messageFactory.create(buffer);
         message.setVerified(this.check(buffer.resetReaderIndex()));
         out.add(message);
         if (log.isDebugEnabled()) {
-            log.debug("处理消息：{}, raw data: {}", JsonUtils.objToJsonStr(message), stringBuilder.toString().replaceAll("ffffff", ""));
+            log.debug("处理消息：{}", JsonUtils.objToJsonStr(message));
         }
 
 

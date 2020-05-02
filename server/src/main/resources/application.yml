@@ -54,6 +54,8 @@ spring:
   rsocket:
     server:
       port: 8889
+      mapping-path: /
+      transport: tcp
 
 logging:
   config: classpath:log4j2-dev.xml
