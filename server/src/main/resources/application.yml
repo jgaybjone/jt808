@@ -5,7 +5,6 @@ server:
 spring:
   application:
     name: jt808-server
-
   profiles:
     active: dev
 
@@ -51,11 +50,19 @@ spring:
     port: 5673
     username: admin
     password: L2FRxaeVJf35JkLP
-  rsocket:
-    server:
-      port: 8889
-      mapping-path: /
-      transport: tcp
+  main:
+    lazy-initialization: true
 
 logging:
   config: classpath:log4j2-dev.xml
+
+
+---
+
+spring:
+  profiles: dev
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
