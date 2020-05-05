@@ -31,7 +31,7 @@ public class MessageEncoder extends MessageToByteEncoder<Message> {
         final WritingMessageType type = msg.getMsgBody().getClass().getAnnotation(WritingMessageType.class);
         if (type.needReply()) {
             reactiveRedisTemplate.opsForValue()
-                    .set(header.getSimNo() + "::" + header.getSerialNo(), msg, Duration.ofMinutes(2))
+                    .set(header.getSimNo() + "::" + header.getSerialNo(), msg, Duration.ofMinutes(60))
                     .subscribe();
         }
         header.setId(type.type());

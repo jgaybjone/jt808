@@ -28,16 +28,20 @@ public class TermConnManager {
         CHANNEL_HOLDER.put(simNo, channel);
     }
 
-    public static void sendMessage(Message message, Consumer<Future<? super Void>> consumer) {
+    public static ChannelFuture sendMessage(Message message, Consumer<Future<? super Void>> consumer) {
         final String simNo = message.getHeader().getSimNo();
         final Channel channel = CHANNEL_HOLDER.get(simNo);
+        if (channel == null) {
+            return null;
+        }
         final ChannelFuture channelFuture = channel.writeAndFlush(message);
         if (consumer != null)
             channelFuture.addListener(consumer::accept);
+        return channelFuture;
     }
 
-    public static void sendMessage(Message message) {
-        sendMessage(message, null);
+    public static ChannelFuture sendMessage(Message message) {
+        return sendMessage(message, null);
     }
 
     public static void connBreak(Channel channel) {

@@ -3,18 +3,15 @@ package com.avenger.jt808.base;
 import com.avenger.jt808.base.pbody.Additional;
 import com.avenger.jt808.base.pbody.UnknownAdditional;
 import com.avenger.jt808.domain.*;
+import com.avenger.jt808.util.ClassPathScanHandler;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
-import java.io.IOException;
+import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -25,72 +22,51 @@ import java.util.stream.Collectors;
 @SuppressWarnings("unchecked")
 @Slf4j
 @Component
-public class MessageFactory implements ApplicationContextAware {
+public class MessageFactory {
 
     final private static Map<Short, Class<Body>> BODY_TYPE_MAPPING = new HashMap<>();
     final private static Map<Byte, Class<Additional>> ADDITIONAL_TYPE_MAPPING = new HashMap<>();
 
-    private final String scanPackage = "com.avenger.jt808.base.pbody";
+    @PostConstruct
+    public void init() {
+        final ClassPathScanHandler classPathScanHandler = new ClassPathScanHandler(true, true, null);
+        String scanPackage = "com.avenger.jt808.base.pbody";
+        final Set<Class<?>> packageAllClasses = classPathScanHandler.getPackageAllClasses(scanPackage, true);
+        BODY_TYPE_MAPPING.putAll(packageAllClasses.stream()
+                .filter(Objects::nonNull)
+                .filter(Body.class::isAssignableFrom)
+                .map(c -> (Class<Body>) c)
+                .map(bodyClass -> {
+                    final ReadingMessageType annotation = bodyClass.getAnnotation(ReadingMessageType.class);
+                    if (annotation == null) {
+                        return null;
+                    }
+                    final ReadingMsgClass<Body> readingMsgClass = new ReadingMsgClass<>();
+                    readingMsgClass.setReadingMessageType(annotation);
+                    readingMsgClass.setBodyClass(bodyClass);
+                    return readingMsgClass;
+                })
+                .filter(Objects::nonNull)
+                .collect(Collectors.toMap(type -> type.getReadingMessageType().type(), ReadingMsgClass::getBodyClass)));
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        try {
-            final Resource[] resources = applicationContext.getResources(String.format("%s/*.class", scanPackage.replaceAll("\\.", "/")));
-            BODY_TYPE_MAPPING.putAll(Arrays.stream(resources)
-                    .map(r -> scanPackage + "." + r.getFilename())
-                    .map(r -> r.replace(".class", ""))
-                    .map(c -> {
-                        try {
-                            return Thread.currentThread().getContextClassLoader().loadClass(c);
-                        } catch (ClassNotFoundException e) {
-                            log.error("加载消息类失败", e);
-                            return null;
-                        }
-                    })
-                    .filter(Objects::nonNull)
-                    .filter(Body.class::isAssignableFrom)
-                    .map(c -> (Class<Body>) c)
-                    .map(bodyClass -> {
-                        final ReadingMessageType annotation = bodyClass.getAnnotation(ReadingMessageType.class);
-                        if (annotation == null) {
-                            return null;
-                        }
-                        final ReadingMsgClass<Body> readingMsgClass = new ReadingMsgClass<>();
-                        readingMsgClass.setReadingMessageType(annotation);
-                        readingMsgClass.setBodyClass(bodyClass);
-                        return readingMsgClass;
-                    })
-                    .filter(Objects::nonNull)
-                    .collect(Collectors.toMap(type -> type.getReadingMessageType().type(), ReadingMsgClass::getBodyClass)));
+        ADDITIONAL_TYPE_MAPPING.putAll(packageAllClasses.stream()
+                .filter(Objects::nonNull)
+                .filter(Additional.class::isAssignableFrom)
+                .map(c -> (Class<Additional>) c)
+                .map(additionalClass -> {
+                    final AdditionalAble annotation = additionalClass.getAnnotation(AdditionalAble.class);
+                    if (annotation == null) {
+                        return null;
+                    }
+                    final ReadingMsgClass<Additional> readingMsgClass = new ReadingMsgClass<>();
+                    readingMsgClass.setAdditionalAble(annotation);
+                    readingMsgClass.setBodyClass(additionalClass);
+                    return readingMsgClass;
+                })
+                .filter(Objects::nonNull)
+                .collect(Collectors.toMap(type -> type.getAdditionalAble().type(), ReadingMsgClass::getBodyClass)));
 
-            ADDITIONAL_TYPE_MAPPING.putAll(Arrays.stream(resources).map(r -> scanPackage + "." + r.getFilename())
-                    .map(r -> r.replace(".class", ""))
-                    .map(c -> {
-                        try {
-                            return Thread.currentThread().getContextClassLoader().loadClass(c);
-                        } catch (ClassNotFoundException e) {
-                            log.error("加载消息类失败", e);
-                            return null;
-                        }
-                    })
-                    .filter(Objects::nonNull)
-                    .filter(Additional.class::isAssignableFrom)
-                    .map(c -> (Class<Additional>) c)
-                    .map(additionalClass -> {
-                        final AdditionalAble annotation = additionalClass.getAnnotation(AdditionalAble.class);
-                        if (annotation == null) {
-                            return null;
-                        }
-                        final ReadingMsgClass<Additional> readingMsgClass = new ReadingMsgClass<>();
-                        readingMsgClass.setAdditionalAble(annotation);
-                        readingMsgClass.setBodyClass(additionalClass);
-                        return readingMsgClass;
-                    })
-                    .filter(Objects::nonNull)
-                    .collect(Collectors.toMap(type -> type.getAdditionalAble().type(), ReadingMsgClass::getBodyClass)));
-        } catch (IOException e) {
-            log.error("io error", e);
-        }
+        log.info("BODY_TYPE size : {}; ADDITIONAL_TYPE size : {}", BODY_TYPE_MAPPING.size(), ADDITIONAL_TYPE_MAPPING.size());
     }
 
 
