@@ -7,6 +7,7 @@ import com.avenger.jt808.util.ClassPathScanHandler;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -22,15 +23,24 @@ import java.util.stream.Collectors;
 @SuppressWarnings("unchecked")
 @Slf4j
 @Component
+@NoArgsConstructor
 public class MessageFactory {
 
-    final private static Map<Short, Class<Body>> BODY_TYPE_MAPPING = new HashMap<>();
-    final private static Map<Byte, Class<Additional>> ADDITIONAL_TYPE_MAPPING = new HashMap<>();
+    final private Map<Short, Class<Body>> BODY_TYPE_MAPPING = new HashMap<>();
+    final private Map<Byte, Class<Additional>> ADDITIONAL_TYPE_MAPPING = new HashMap<>();
+
+    public MessageFactory(String scanPackage) {
+        this.init("com.avenger.jt808.base.pbody");
+    }
 
     @PostConstruct
     public void init() {
+        this.init("com.avenger.jt808.base.pbody");
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    private void init(String scanPackage) {
         final ClassPathScanHandler classPathScanHandler = new ClassPathScanHandler(true, true, null);
-        String scanPackage = "com.avenger.jt808.base.pbody";
         final Set<Class<?>> packageAllClasses = classPathScanHandler.getPackageAllClasses(scanPackage, true);
         BODY_TYPE_MAPPING.putAll(packageAllClasses.stream()
                 .filter(Objects::nonNull)
