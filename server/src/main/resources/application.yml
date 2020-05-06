@@ -50,12 +50,14 @@ spring:
     port: 5673
     username: admin
     password: L2FRxaeVJf35JkLP
-  main:
-    lazy-initialization: true
 
 logging:
   config: classpath:log4j2-dev.xml
 
+management:
+  endpoint:
+    health:
+      show-details: always
 
 ---
 
@@ -66,3 +68,9 @@ management:
     web:
       exposure:
         include: '*'
+
+---
+spring:
+  profiles: prod
+  main:
+    lazy-initialization: true
