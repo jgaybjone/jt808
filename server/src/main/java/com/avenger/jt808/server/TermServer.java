@@ -1,6 +1,7 @@
 package com.avenger.jt808.server;
 
 import com.avenger.jt808.base.MessageFactory;
+import com.avenger.jt808.service.MessageRecordService;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -42,6 +43,8 @@ public class TermServer {
     private final MessageHandlerManager messageHandlerManager;
     @NonNull
     private final ReactiveRedisTemplate reactiveRedisTemplate;
+    @NonNull
+    private final MessageRecordService messageRecordService;
 
     EventLoopGroup bossGroup;
     EventLoopGroup workerGroup;
@@ -66,7 +69,7 @@ public class TermServer {
                             ch.pipeline().addLast("idleStateHandler", new IdleStateHandler(20, 0, 0, TimeUnit.MINUTES));
                             ch.pipeline().addLast("decoder", new MessageDecoder(messageFactory));
                             ch.pipeline().addLast(new SimpleChannelMessageHandler(messageHandlerManager));
-                            ch.pipeline().addLast(new MessageEncoder(reactiveRedisTemplate));
+                            ch.pipeline().addLast(new MessageEncoder(reactiveRedisTemplate, messageRecordService));
                             ch.pipeline().addLast("encoder", new ByteArrayEncoder());
                             //handler.setConnctionMap(connctionMap);
                         }

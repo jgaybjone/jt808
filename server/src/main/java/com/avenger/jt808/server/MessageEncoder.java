@@ -3,6 +3,12 @@ package com.avenger.jt808.server;
 import com.avenger.jt808.domain.Header;
 import com.avenger.jt808.domain.Message;
 import com.avenger.jt808.domain.WritingMessageType;
+import com.avenger.jt808.domain.entity.MessageRecord;
+import com.avenger.jt808.enums.MessageFlow;
+import com.avenger.jt808.service.MessageRecordService;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
@@ -10,6 +16,7 @@ import io.netty.handler.codec.MessageToByteEncoder;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.ReactiveRedisTemplate;
+import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 
@@ -17,12 +24,31 @@ import java.time.Duration;
  * Created by jg.wang on 2020/4/9.
  * Description: 消息序列化处理
  */
-@SuppressWarnings({"rawtypes", "unchecked"})
+@SuppressWarnings({"rawtypes", "unchecked", "deprecation"})
 @Slf4j
 @AllArgsConstructor
 public class MessageEncoder extends MessageToByteEncoder<Message> {
 
     private final ReactiveRedisTemplate reactiveRedisTemplate;
+
+    private final MessageRecordService messageRecordService;
+
+    private static final ObjectMapper mapper = new ObjectMapper();
+
+    static {
+        mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+    }
+
+    public static String writeAsString(Object o) {
+        String s = null;
+        try {
+            s = mapper.writeValueAsString(o);
+        } catch (JsonProcessingException e) {
+            log.error("msg to json fail", e);
+        }
+        return s;
+    }
+
 
     @Override
     protected void encode(ChannelHandlerContext ctx, Message msg, ByteBuf out) throws Exception {
@@ -30,8 +56,18 @@ public class MessageEncoder extends MessageToByteEncoder<Message> {
         final Header header = msg.getHeader();
         final WritingMessageType type = msg.getMsgBody().getClass().getAnnotation(WritingMessageType.class);
         if (type.needReply()) {
-            reactiveRedisTemplate.opsForValue()
+            reactiveRedisTemplate
+                    .opsForValue()
                     .set(header.getSimNo() + "::" + header.getSerialNo(), msg, Duration.ofMinutes(60))
+                    .doOnSuccess(c -> messageRecordService.saveEntity(MessageRecord
+                            .builder()
+                            .messageType((int) header.getId())
+                            .serialNo(((int) header.getSerialNo()))
+                            .simNo(header.getSimNo())
+                            .flowTo(MessageFlow.SEND)
+                            .detail(writeAsString(msg))
+                            .build()))
+                    .subscribeOn(Schedulers.parallel())
                     .subscribe();
         }
         header.setId(type.type());
