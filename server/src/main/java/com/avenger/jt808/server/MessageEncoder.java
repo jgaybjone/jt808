@@ -60,7 +60,7 @@ public class MessageEncoder extends MessageToByteEncoder<Message> {
             reactiveRedisTemplate
                     .opsForValue()
                     .set(header.getSimNo() + "::" + header.getSerialNo(), msg, Duration.ofMinutes(60))
-                    .doOnSuccess(c -> messageRecordService.saveEntity(MessageRecord
+                    .doOnNext(c -> messageRecordService.saveEntity(MessageRecord
                             .builder()
                             .messageType((int) header.getId())
                             .serialNo(((int) header.getSerialNo()))

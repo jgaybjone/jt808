@@ -45,11 +45,11 @@ public class MessageRecordServiceImpl implements MessageRecordService {
      */
     @Override
     public Flux<?> sendCheck(String simNo, short serialNo) {
-        return Flux.interval(Duration.ofMillis(20)).zipWith(Flux.create(fluxSink -> {
+        return Flux.interval(Duration.ofMillis(200)).zipWith(Flux.create(fluxSink -> {
             final Optional<MessageRecord> one = messageRecordRepository.findOne((Specification<MessageRecord>) (root, query, criteriaBuilder) -> {
                 final LocalDateTime now = LocalDateTime.now();
 
-                List<Predicate> predicates = new ArrayList<>(5);
+                List<Predicate> predicates = new ArrayList<>(4);
                 predicates.add(criteriaBuilder.equal(root.get("simNo"), simNo));
                 predicates.add(criteriaBuilder.equal(root.get("serialNo"), serialNo));
                 predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("createdAt"), now));
@@ -64,7 +64,7 @@ public class MessageRecordServiceImpl implements MessageRecordService {
                     fluxSink.next(Collections.singletonMap("message", "发送中"));
                 }
             });
-            if (one.isPresent()) {
+            if (!one.isPresent()) {
                 fluxSink.error(new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "发送失败"));
             }
         }));
