@@ -5,6 +5,7 @@ import com.avenger.jt808.domain.Message;
 import com.avenger.jt808.domain.WritingMessageType;
 import com.avenger.jt808.domain.entity.MessageRecord;
 import com.avenger.jt808.enums.MessageFlow;
+import com.avenger.jt808.enums.MessageRecordStatus;
 import com.avenger.jt808.service.MessageRecordService;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -65,6 +66,7 @@ public class MessageEncoder extends MessageToByteEncoder<Message> {
                             .serialNo(((int) header.getSerialNo()))
                             .simNo(header.getSimNo())
                             .flowTo(MessageFlow.SEND)
+                            .status(MessageRecordStatus.NOT_RESPONDING)
                             .detail(writeAsString(msg))
                             .build()))
                     .subscribeOn(Schedulers.parallel())

@@ -1,7 +1,7 @@
 package com.avenger.jt808.base.pbody;
 
-import com.avenger.jt808.domain.ReadingMessageType;
 import com.avenger.jt808.domain.Body;
+import com.avenger.jt808.domain.ReadingMessageType;
 import com.avenger.jt808.enums.ShootAtOnceResult;
 import io.netty.buffer.ByteBuf;
 import lombok.Data;
@@ -39,7 +39,7 @@ public class ShootAtOnceRespMsg implements Body {
         this.respSerialNo = byteBuf.readShort();
         this.result = ShootAtOnceResult.valueOf(byteBuf.readByte());
         mediaIds.clear();
-        final byte len = byteBuf.readByte();
+        final int len = byteBuf.readUnsignedShort();
         for (int i = 0; i < len; i++) {
             mediaIds.add(byteBuf.readInt());
         }

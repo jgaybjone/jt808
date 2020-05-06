@@ -60,7 +60,7 @@ public class ShootAtOnceRespHandler implements MessageHandler {
                                     predicates.add(criteriaBuilder.equal(root.get("simNo"), h.getSimNo()));
                                     predicates.add(criteriaBuilder.equal(root.get("serialNo"), b.getRespSerialNo()));
                                     predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("createdAt"), now));
-                                    predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("status"), false));
+                                    predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("status"), MessageRecordStatus.NOT_RESPONDING));
                                     predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("createdAt"), now.minusMinutes(20)));
                                     return query
                                             .where(predicates.toArray(new Predicate[0])).getRestriction();
