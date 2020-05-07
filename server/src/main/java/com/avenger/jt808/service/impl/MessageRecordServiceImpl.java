@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpServerErrorException;
 import reactor.core.publisher.Flux;
+import reactor.util.function.Tuple2;
 
 import javax.persistence.criteria.Predicate;
 import java.time.Duration;
@@ -48,9 +49,9 @@ public class MessageRecordServiceImpl implements MessageRecordService {
     @Override
     public Flux<?> sendCheck(String simNo, short serialNo) {
         final AtomicInteger atomicInteger = new AtomicInteger(0);
-        return Flux.interval(Duration.ofMillis(20)).zipWith(Flux.generate(fluxSink -> {
-            if (atomicInteger.incrementAndGet() < 2) {
-                fluxSink.next(Collections.singletonMap("message", "发送中"));
+        return Flux.interval(Duration.ofMillis(500)).zipWith(Flux.generate(fluxSink -> {
+            if (atomicInteger.incrementAndGet() >= 100) {
+                fluxSink.error(new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "发送失败"));
                 return;
             }
             final Optional<MessageRecord> one = messageRecordRepository.findOne((Specification<MessageRecord>) (root, query, criteriaBuilder) -> {
@@ -74,8 +75,8 @@ public class MessageRecordServiceImpl implements MessageRecordService {
                 }
             });
             if (!one.isPresent()) {
-                fluxSink.error(new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "发送失败"));
+                fluxSink.next(Collections.singletonMap("message", "发送中"));
             }
-        }));
+        })).map(Tuple2::getT2);
     }
 }
