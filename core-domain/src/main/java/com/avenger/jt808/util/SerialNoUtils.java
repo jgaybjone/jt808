@@ -14,7 +14,7 @@ public class SerialNoUtils {
 
     private static final AtomicInteger inc = new AtomicInteger(0);
 
-    private static Supplier<Short> supplier = () -> ((short) inc.incrementAndGet());
+    private static Supplier<Short> supplier = () -> (short) inc.incrementAndGet();
 
     public static synchronized void setSupplier(Supplier<Short> supplier) {
         SerialNoUtils.supplier = supplier;

@@ -1,11 +1,15 @@
 package com.avenger.jt808.controller;
 
+import com.avenger.jt808.base.tbody.QueryMediaDataMsg;
 import com.avenger.jt808.base.tbody.ShootAtOnceMsg;
+import com.avenger.jt808.domain.Body;
 import com.avenger.jt808.domain.EncryptionForm;
 import com.avenger.jt808.domain.Header;
 import com.avenger.jt808.domain.Message;
 import com.avenger.jt808.server.TermConnManager;
 import com.avenger.jt808.service.MessageRecordService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -26,27 +30,38 @@ import reactor.core.publisher.Flux;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-//@Api(tags = "消息发送")
+@Api(tags = "消息发送")
 public class MessageController {
 
     @NonNull
     private final MessageRecordService messageRecordService;
 
     @PostMapping(value = "shoot", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-//    @ApiOperation(value = "立即拍摄")
-    public Flux<?> send(@RequestBody Shoot shoot) {
-        Header header = new Header(shoot.getSimNo(), false, EncryptionForm.NOTHING);
-        Message message = new Message();
-        message.setHeader(header);
-        message.setMsgBody(shoot.getBody());
-        TermConnManager.sendMessage(message);
-        return messageRecordService.sendCheck(header.getSimNo(), header.getSerialNo());
-
+    @ApiOperation(value = "立即拍摄")
+    public Flux<?> send(@RequestBody SendMsg<ShootAtOnceMsg> sendMsg) {
+        return sendCheck(sendMsg);
     }
 
     @Data
-    private static class Shoot {
+    private static class SendMsg<T extends Body> {
         private String simNo;
-        private ShootAtOnceMsg body;
+        private T body;
     }
+
+    @PostMapping(value = "media_scan", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @ApiOperation(value = "多媒体数据查询")
+    public Flux<?> scanMediaFile(@RequestBody SendMsg<QueryMediaDataMsg> sendMsg) {
+        return sendCheck(sendMsg);
+    }
+
+    private Flux<?> sendCheck(SendMsg<?> sendMsg) {
+        Header header = new Header(sendMsg.getSimNo(), false, EncryptionForm.NOTHING);
+        Message message = new Message();
+        message.setHeader(header);
+        message.setMsgBody(sendMsg.getBody());
+        TermConnManager.sendMessage(message);
+        return messageRecordService.sendCheck(header.getSimNo(), header.getSerialNo());
+    }
+
+
 }

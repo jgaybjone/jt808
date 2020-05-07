@@ -68,7 +68,8 @@ public class MessageRecordServiceImpl implements MessageRecordService {
             });
             one.ifPresent(messageRecord -> {
                 if (messageRecord.getStatus() == MessageRecordStatus.RESPONDED) {
-                    fluxSink.next(Collections.singletonMap("message", "终端已回复"));
+//                    fluxSink.next(Collections.singletonMap("message", "终端已回复"));
+                    fluxSink.next(Collections.singletonMap("message", messageRecord.getResponse()));
                     fluxSink.complete();
                 } else {
                     fluxSink.next(Collections.singletonMap("message", "已发送，等待终端回复"));
