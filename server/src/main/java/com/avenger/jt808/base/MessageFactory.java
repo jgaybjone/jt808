@@ -12,6 +12,7 @@ import io.netty.buffer.Unpooled;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -33,7 +34,7 @@ public class MessageFactory {
     final private Map<Short, Class<Body>> BODY_TYPE_MAPPING = new HashMap<>();
     final private Map<Byte, Class<Additional>> ADDITIONAL_TYPE_MAPPING = new HashMap<>();
     final private Map<String, ByteBuf> bufMap = new HashMap<>();
-    final private Map<String, LocalDateTime> msgKey = new HashMap<>();
+    final private Map<String, KeyInfo> msgKey = new HashMap<>();
 
     public MessageFactory(String scanPackage) {
         this.init("com.avenger.jt808.base.pbody");
@@ -113,7 +114,11 @@ public class MessageFactory {
             } else {
                 final String key = header.getId() + header.getSimNo() + header.getPacketsCount();
                 if (header.getPacketNumber() == 1) {
-                    msgKey.put(key, LocalDateTime.now());
+                    final KeyInfo keyInfo = new KeyInfo();
+                    keyInfo.setStart(LocalDateTime.now());
+                    keyInfo.setPackageCount(header.getPacketsCount());
+                    keyInfo.setSerialNo(header.getSerialNo());
+                    msgKey.put(key, keyInfo);
                 }
                 bufMap.put(key + header.getPacketNumber(), Unpooled.wrappedBuffer(bytes));
                 final ByteBuf merge = this.merge(header);
@@ -157,14 +162,7 @@ public class MessageFactory {
         } else {
             final ByteBuf b = bufMap.get(key + 1);
             final Header h = new Header(b);
-            final Header header1 = new Header(h.getSimNo(), false, EncryptionForm.NOTHING);
-            final ReissueMsg reissueMsg = new ReissueMsg();
-            reissueMsg.setOriginalSerialNo(h.getSerialNo());
-            reissueMsg.setPacketIds(numbs);
-            final Message message = new Message();
-            message.setHeader(header1);
-            message.setMsgBody(reissueMsg);
-            TermConnManager.sendMessage(message);
+            retransmission(numbs, h.getSimNo(), h.getSerialNo());
             return null;
         }
 
@@ -200,6 +198,48 @@ public class MessageFactory {
         }
 
         return adds;
+    }
+
+    @Scheduled(cron = "0/1 * * * * ?")
+    public void timeoutCheck() {
+        final LocalDateTime now = LocalDateTime.now();
+        msgKey.keySet().forEach(key -> {
+            final KeyInfo keyInfo = msgKey.get(key);
+            if (keyInfo == null) {
+                return;
+            }
+            final LocalDateTime start = keyInfo.getStart();
+            //超时检查如果超时请求重传所有包
+            if (start.plusMinutes(30).compareTo(now) <= 0) {
+                List<Short> ids = new ArrayList<>();
+                for (int i = 1; i <= keyInfo.getPackageCount(); i++) {
+                    bufMap.remove(key + i);
+                    ids.add((short) i);
+                }
+                this.retransmission(ids, keyInfo.getSimNo(), keyInfo.getSerialNo());
+                msgKey.remove(key);
+            }
+        });
+    }
+
+    private void retransmission(List<Short> ids, String simNo, short serialNo) {
+        log.info("数据分包处理未完成，要求重传包 simNo : {}, 包序号 ： {}", simNo, ids);
+        final Header header = new Header(simNo, false, EncryptionForm.NOTHING);
+        final ReissueMsg reissueMsg = new ReissueMsg();
+        reissueMsg.setOriginalSerialNo(serialNo);
+        reissueMsg.setPacketIds(ids);
+        final Message message = new Message();
+        message.setHeader(header);
+        message.setMsgBody(reissueMsg);
+        TermConnManager.sendMessage(message);
+    }
+
+    @Data
+    private static class KeyInfo {
+        private String simNo;
+        private LocalDateTime start;
+        private int packageCount;
+        private short serialNo;
     }
 
 }

@@ -46,6 +46,8 @@
                      level="debug"/>
         <AsyncLogger name="org.hibernate.type.descriptor.sql.BasicBinder"
                      level="trace"/>
+        <AsyncLogger name="org.hibernate.internal.util"
+                     level="info"/>
         <!--        <AsyncLogger name="com.glp.fsp.interfaces.filter.PayloadLoggingFilter" level="debug">-->
         <!--            <AppenderRef ref="payloadLog"/>-->
         <!--        </AsyncLogger>-->
