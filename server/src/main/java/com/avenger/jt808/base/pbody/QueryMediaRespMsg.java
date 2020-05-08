@@ -1,11 +1,13 @@
 package com.avenger.jt808.base.pbody;
 
-import com.avenger.jt808.domain.ReadingMessageType;
 import com.avenger.jt808.domain.Body;
+import com.avenger.jt808.domain.ReadingMessageType;
 import com.avenger.jt808.enums.EventItem;
 import com.avenger.jt808.enums.MultimediaEventType;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import lombok.Data;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,15 +17,19 @@ import java.util.List;
  * Description:
  */
 @ReadingMessageType(type = 0x0802)
-@Data
 public class QueryMediaRespMsg implements Body {
 
     /**
      * 应答流水号，对应终端下发时的流水号
      */
+    @Getter
     private short respSerialNo;
 
+    @Getter
     private List<MediaResp> mediaResps = new ArrayList<>();
+
+    @Getter
+    private ByteBuf pk;
 
     @Override
     public byte[] serialize() {
@@ -31,12 +37,21 @@ public class QueryMediaRespMsg implements Body {
     }
 
     @Override
+    public void deSerializeSubpackage(ByteBuf byteBuf) {
+        pk = Unpooled.wrappedBuffer(byteBuf);
+    }
+
+    @Override
     public void deSerialize(ByteBuf byteBuf) {
+        byteBuf.markReaderIndex();
+        deSerializeSubpackage(byteBuf);
+        byteBuf.resetReaderIndex();
         this.respSerialNo = byteBuf.readShort();
-        final byte size = byteBuf.readByte();
+        final int size = byteBuf.readUnsignedShort();
         for (int i = 0; i < size; i++) {
             final MediaResp resp = new MediaResp();
             resp.setId(byteBuf.readInt());
+            resp.setType(MultimediaEventType.valueOf(byteBuf.readByte()));
             resp.setChannel(byteBuf.readByte());
             resp.setEventItem(EventItem.valueOf(byteBuf.readByte()));
             final LocationAndAlarmMsg location = new LocationAndAlarmMsg();

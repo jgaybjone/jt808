@@ -6,22 +6,24 @@ import com.avenger.jt808.enums.EventItem;
 import com.avenger.jt808.enums.MultimediaEventType;
 import com.avenger.jt808.util.ByteArrayUtils;
 import com.avenger.jt808.util.ByteBufUtils;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
  * Created by jg.wang on 2020/4/13.
  * Description:
  */
-@WritingMessageType(type = (0x8802 - 0x10000))
+@WritingMessageType(type = ((short) 0x8802), needReply = true)
 @Data
 public class QueryMediaDataMsg implements Body {
 
-    private static final DateTimeFormatter DF = DateTimeFormatter.ofPattern("yy-MM-dd-HH-mm-ss");
+    private static final DateTimeFormatter DF = DateTimeFormatter.ofPattern("yyMMddHHmmss");
 
     /**
      * 0:图像;1:音频;2:视频;
@@ -35,9 +37,9 @@ public class QueryMediaDataMsg implements Body {
 
     private EventItem eventItem;
 
-    private LocalDate startDate;
+    private LocalDateTime startDate;
 
-    private LocalDate endDate;
+    private LocalDateTime endDate;
 
     @Override
     public byte[] serialize() {

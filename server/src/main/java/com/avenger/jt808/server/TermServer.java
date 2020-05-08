@@ -69,7 +69,7 @@ public class TermServer {
                             ch.pipeline().addLast("idleStateHandler", new IdleStateHandler(20, 0, 0, TimeUnit.MINUTES));
                             ch.pipeline().addLast("decoder", new MessageDecoder(messageFactory));
                             ch.pipeline().addLast(new SimpleChannelMessageHandler(messageHandlerManager));
-                            ch.pipeline().addLast(new MessageEncoder(reactiveRedisTemplate, messageRecordService));
+                            ch.pipeline().addLast(new MessageEncoder(messageRecordService));
                             ch.pipeline().addLast("encoder", new ByteArrayEncoder());
                             //handler.setConnctionMap(connctionMap);
                         }

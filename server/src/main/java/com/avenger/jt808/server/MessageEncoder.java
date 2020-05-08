@@ -16,10 +16,6 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.core.ReactiveRedisTemplate;
-import reactor.core.scheduler.Schedulers;
-
-import java.time.Duration;
 
 /**
  * Created by jg.wang on 2020/4/9.
@@ -30,7 +26,7 @@ import java.time.Duration;
 @AllArgsConstructor
 public class MessageEncoder extends MessageToByteEncoder<Message> {
 
-    private final ReactiveRedisTemplate reactiveRedisTemplate;
+//    private final ReactiveRedisTemplate reactiveRedisTemplate;
 
     private final MessageRecordService messageRecordService;
 
@@ -56,23 +52,18 @@ public class MessageEncoder extends MessageToByteEncoder<Message> {
         final ByteBuf buffer = Unpooled.buffer(200);
         final Header header = msg.getHeader();
         final WritingMessageType type = msg.getMsgBody().getClass().getAnnotation(WritingMessageType.class);
-        if (type.needReply()) {
-            reactiveRedisTemplate
-                    .opsForValue()
-                    .set(header.getSimNo() + "::" + header.getSerialNo(), msg, Duration.ofMinutes(60))
-                    .doOnNext(c -> messageRecordService.saveEntity(MessageRecord
-                            .builder()
-                            .messageType((int) header.getId())
-                            .serialNo(((int) header.getSerialNo()))
-                            .simNo(header.getSimNo())
-                            .flowTo(MessageFlow.SEND)
-                            .status(MessageRecordStatus.NOT_RESPONDING)
-                            .detail(writeAsString(msg))
-                            .build()))
-                    .subscribeOn(Schedulers.parallel())
-                    .subscribe();
-        }
         header.setId(type.type());
+        if (type.needReply()) {
+            messageRecordService.saveEntity(MessageRecord
+                    .builder()
+                    .messageType((int) header.getId())
+                    .serialNo(((int) header.getSerialNo()))
+                    .simNo(header.getSimNo())
+                    .flowTo(MessageFlow.SEND)
+                    .status(MessageRecordStatus.NOT_RESPONDING)
+                    .detail(writeAsString(msg))
+                    .build());
+        }
         final byte[] b = msg.getMsgBody().serialize();
         buffer.writeBytes(header.getRaw((byte) b.length));
         buffer.writeBytes(b);

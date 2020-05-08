@@ -7,4 +7,7 @@ import java.io.Serializable;
  * Description:
  */
 public interface Body extends ByteSerialize, Serializable {
+    default short getRespSerialNo() {
+        return 0;
+    }
 }

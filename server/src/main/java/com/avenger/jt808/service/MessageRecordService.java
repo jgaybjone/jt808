@@ -1,7 +1,9 @@
 package com.avenger.jt808.service;
 
+import com.avenger.jt808.domain.Message;
 import com.avenger.jt808.domain.entity.MessageRecord;
 import com.avenger.jt808.domain.repository.MessageRecordRepository;
+import org.springframework.context.ApplicationEvent;
 import reactor.core.publisher.Flux;
 
 /**
@@ -12,4 +14,18 @@ public interface MessageRecordService extends BaseService<MessageRecord, Long, M
 
     Flux<?> sendCheck(String simNo, short serialNo);
 
+    void responseMessage(MessageRecordEvent messageRecordEvent);
+
+    class MessageRecordEvent extends ApplicationEvent {
+
+        /**
+         * Create a new {@code ApplicationEvent}.
+         *
+         * @param source the object on which the event initially occurred or with
+         *               which the event is associated (never {@code null})
+         */
+        public MessageRecordEvent(Message source) {
+            super(source);
+        }
+    }
 }

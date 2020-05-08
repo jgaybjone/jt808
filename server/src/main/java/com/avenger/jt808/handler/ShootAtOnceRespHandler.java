@@ -1,26 +1,16 @@
 package com.avenger.jt808.handler;
 
 import com.avenger.jt808.base.pbody.ShootAtOnceRespMsg;
-import com.avenger.jt808.domain.Header;
 import com.avenger.jt808.domain.Message;
-import com.avenger.jt808.domain.entity.MessageRecord;
-import com.avenger.jt808.enums.MessageFlow;
-import com.avenger.jt808.enums.MessageRecordStatus;
-import com.avenger.jt808.server.MessageEncoder;
 import com.avenger.jt808.service.MessageRecordService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.reactivestreams.Publisher;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
-import javax.persistence.criteria.Predicate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -49,40 +39,42 @@ public class ShootAtOnceRespHandler implements MessageHandler {
                 .doOnSuccess(v -> Optional.of(message)
                         .filter(m -> m.getMsgBody() instanceof ShootAtOnceRespMsg)
                         .ifPresent(m -> {
-                            final Header h = m.getHeader();
-                            final ShootAtOnceRespMsg b = (ShootAtOnceRespMsg) m.getMsgBody();
-                            final short respSerialNo = b.getRespSerialNo();
-                            messageRecordService.crudAndConsumer(repo -> {
-                                repo.findOne((Specification<MessageRecord>) (root, query, criteriaBuilder) -> {
-                                    final LocalDateTime now = LocalDateTime.now();
-
-                                    List<Predicate> predicates = new ArrayList<>(5);
-                                    predicates.add(criteriaBuilder.equal(root.get("simNo"), h.getSimNo()));
-                                    predicates.add(criteriaBuilder.equal(root.get("serialNo"), b.getRespSerialNo()));
-                                    predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("createdAt"), now));
-                                    predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("status"), MessageRecordStatus.NOT_RESPONDING));
-                                    predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("createdAt"), now.minusMinutes(20)));
-                                    return query
-                                            .where(predicates.toArray(new Predicate[0])).getRestriction();
-                                }).ifPresent(messageRecord -> {
-                                    final MessageRecord response = MessageRecord
-                                            .builder()
-                                            .flowTo(MessageFlow.RECEIVE)
-                                            .serialNo((int) h.getSerialNo())
-                                            .simNo(h.getSimNo())
-                                            .messageType((int) h.getId())
-                                            .status(MessageRecordStatus.RESPONDED)
-                                            .detail(MessageEncoder.writeAsString(m))
-                                            .build();
-                                    repo.save(response);
-                                    messageRecord.setStatus(MessageRecordStatus.RESPONDED);
-                                    messageRecord.setResponse(response);
-                                    repo.save(messageRecord);
-                                });
-                            });
-                            reactiveRedisTemplate
-                                    .delete(h.getSimNo() + "::" + respSerialNo)
-                                    .subscribe();
+//                            final Header h = m.getHeader();
+//                            final ShootAtOnceRespMsg b = (ShootAtOnceRespMsg) m.getMsgBody();
+//                            final short respSerialNo = b.getRespSerialNo();
+                            final MessageRecordService.MessageRecordEvent event = new MessageRecordService.MessageRecordEvent(m);
+                            messageRecordService.responseMessage(event);
+//                            messageRecordService.crudAndConsumer(repo -> {
+//                                repo.findOne((Specification<MessageRecord>) (root, query, criteriaBuilder) -> {
+//                                    final LocalDateTime now = LocalDateTime.now();
+//
+//                                    List<Predicate> predicates = new ArrayList<>(5);
+//                                    predicates.add(criteriaBuilder.equal(root.get("simNo"), h.getSimNo()));
+//                                    predicates.add(criteriaBuilder.equal(root.get("serialNo"), b.getRespSerialNo()));
+//                                    predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("createdAt"), now));
+//                                    predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("status"), MessageRecordStatus.NOT_RESPONDING));
+//                                    predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("createdAt"), now.minusMinutes(20)));
+//                                    return query
+//                                            .where(predicates.toArray(new Predicate[0])).getRestriction();
+//                                }).ifPresent(messageRecord -> {
+//                                    final MessageRecord response = MessageRecord
+//                                            .builder()
+//                                            .flowTo(MessageFlow.RECEIVE)
+//                                            .serialNo((int) h.getSerialNo())
+//                                            .simNo(h.getSimNo())
+//                                            .messageType((int) h.getId())
+//                                            .status(MessageRecordStatus.RESPONDED)
+//                                            .detail(MessageEncoder.writeAsString(m))
+//                                            .build();
+//                                    repo.save(response);
+//                                    messageRecord.setStatus(MessageRecordStatus.RESPONDED);
+//                                    messageRecord.setResponse(response);
+//                                    repo.save(messageRecord);
+//                                });
+//                            });
+//                            reactiveRedisTemplate
+//                                    .delete(h.getSimNo() + "::" + respSerialNo)
+//                                    .subscribe();
                         }));
     }
 }

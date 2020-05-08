@@ -62,6 +62,10 @@ public class MessageDecoder extends ReplayingDecoder<Void> {
             log.debug(" raw data: {}", stringBuilder.toString().replaceAll("ffffff", ""));
         }
         final Message message = messageFactory.create(buffer);
+        if (message == null) {
+            log.info("未处理完所有分包！");
+            return;
+        }
         message.setVerified(this.check(buffer.resetReaderIndex()));
         out.add(message);
         if (log.isDebugEnabled()) {

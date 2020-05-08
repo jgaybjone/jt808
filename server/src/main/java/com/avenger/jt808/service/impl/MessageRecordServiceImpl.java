@@ -1,13 +1,18 @@
 package com.avenger.jt808.service.impl;
 
+import com.avenger.jt808.domain.Body;
+import com.avenger.jt808.domain.Header;
+import com.avenger.jt808.domain.Message;
 import com.avenger.jt808.domain.entity.MessageRecord;
 import com.avenger.jt808.domain.repository.MessageRecordRepository;
 import com.avenger.jt808.enums.MessageFlow;
 import com.avenger.jt808.enums.MessageRecordStatus;
+import com.avenger.jt808.server.MessageEncoder;
 import com.avenger.jt808.service.MessageRecordService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.event.EventListener;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -80,4 +85,41 @@ public class MessageRecordServiceImpl implements MessageRecordService {
             }
         })).map(Tuple2::getT2);
     }
+
+    @Override
+    @EventListener
+    public void responseMessage(MessageRecordEvent messageRecordEvent) {
+        final Message source = (Message) messageRecordEvent.getSource();
+        final Header h = source.getHeader();
+        final Body b = source.getMsgBody();
+
+        messageRecordRepository.findOne((Specification<MessageRecord>) (root, query, criteriaBuilder) -> {
+            final LocalDateTime now = LocalDateTime.now();
+
+            List<Predicate> predicates = new ArrayList<>(5);
+            predicates.add(criteriaBuilder.equal(root.get("simNo"), h.getSimNo()));
+            predicates.add(criteriaBuilder.equal(root.get("serialNo"), b.getRespSerialNo()));
+            predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("createdAt"), now));
+            predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("status"), MessageRecordStatus.NOT_RESPONDING));
+            predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("createdAt"), now.minusMinutes(20)));
+            return query
+                    .where(predicates.toArray(new Predicate[0])).getRestriction();
+        }).ifPresent(messageRecord -> {
+            final MessageRecord response = MessageRecord
+                    .builder()
+                    .flowTo(MessageFlow.RECEIVE)
+                    .serialNo((int) h.getSerialNo())
+                    .simNo(h.getSimNo())
+                    .messageType((int) h.getId())
+                    .status(MessageRecordStatus.RESPONDED)
+                    .detail(MessageEncoder.writeAsString(source))
+                    .build();
+            messageRecordRepository.save(response);
+            messageRecord.setStatus(MessageRecordStatus.RESPONDED);
+            messageRecord.setResponse(response);
+            messageRecordRepository.save(messageRecord);
+        });
+    }
+
+
 }

@@ -2,8 +2,11 @@ package com.avenger.jt808.base;
 
 import com.avenger.jt808.base.pbody.Additional;
 import com.avenger.jt808.base.pbody.UnknownAdditional;
+import com.avenger.jt808.base.tbody.ReissueMsg;
 import com.avenger.jt808.domain.*;
+import com.avenger.jt808.server.TermConnManager;
 import com.avenger.jt808.util.ClassPathScanHandler;
+import com.google.common.collect.Lists;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.Data;
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -28,6 +32,8 @@ public class MessageFactory {
 
     final private Map<Short, Class<Body>> BODY_TYPE_MAPPING = new HashMap<>();
     final private Map<Byte, Class<Additional>> ADDITIONAL_TYPE_MAPPING = new HashMap<>();
+    final private Map<String, ByteBuf> bufMap = new HashMap<>();
+    final private Map<String, LocalDateTime> msgKey = new HashMap<>();
 
     public MessageFactory(String scanPackage) {
         this.init("com.avenger.jt808.base.pbody");
@@ -97,8 +103,25 @@ public class MessageFactory {
         final Body body = bodyClass.newInstance();
         final byte[] bytes = new byte[header.getBodySize()];
         byteBuf.readBytes(bytes);
-        if (header.isPacket() && header.getPacketNumber() > 1) {
-            body.deSerializeSubpackage(Unpooled.wrappedBuffer(bytes));
+        if (header.isPacket()) {
+            if (header.getId() == 0x0801) {
+                if (header.getPacketNumber() > 1) {
+                    body.deSerializeSubpackage(Unpooled.wrappedBuffer(bytes));
+                } else {
+                    body.deSerialize(Unpooled.wrappedBuffer(bytes));
+                }
+            } else {
+                final String key = header.getId() + header.getSimNo() + header.getPacketsCount();
+                if (header.getPacketNumber() == 1) {
+                    msgKey.put(key, LocalDateTime.now());
+                }
+                bufMap.put(key + header.getPacketNumber(), Unpooled.wrappedBuffer(bytes));
+                final ByteBuf merge = this.merge(header);
+                if (merge == null) {
+                    return null;
+                }
+                body.deSerialize(merge);
+            }
         } else {
             body.deSerialize(Unpooled.wrappedBuffer(bytes));
         }
@@ -106,6 +129,45 @@ public class MessageFactory {
         message.setHeader(header);
         message.setMsgBody(body);
         return message;
+    }
+
+    private ByteBuf merge(Header header) {
+        if (header.getPacketNumber() != header.getPacketsCount()) {
+            return null;
+        }
+        final String key = header.getId() + header.getSimNo() + header.getPacketsCount();
+        final ByteBuf buf = Unpooled.buffer(800);
+        final List<Short> numbs = Lists.newArrayListWithCapacity(header.getPacketsCount());
+        for (int i = 1; i <= header.getPacketsCount(); i++) {
+            final ByteBuf byteBuf = bufMap.get(key + i);
+            if (byteBuf != null) {
+                buf.writeBytes(byteBuf);
+            } else {
+                numbs.add((short) i);
+            }
+        }
+
+        if (CollectionUtils.isEmpty(numbs)) {
+            for (int i = 1; i <= header.getPacketsCount(); i++) {
+                bufMap.remove(key + i);
+            }
+            log.info("所有分包处理完成，key = {}", key);
+            msgKey.remove(key);
+            return buf;
+        } else {
+            final ByteBuf b = bufMap.get(key + 1);
+            final Header h = new Header(b);
+            final Header header1 = new Header(h.getSimNo(), false, EncryptionForm.NOTHING);
+            final ReissueMsg reissueMsg = new ReissueMsg();
+            reissueMsg.setOriginalSerialNo(h.getSerialNo());
+            reissueMsg.setPacketIds(numbs);
+            final Message message = new Message();
+            message.setHeader(header1);
+            message.setMsgBody(reissueMsg);
+            TermConnManager.sendMessage(message);
+            return null;
+        }
+
     }
 
     public List<Additional> parse(ByteBuf byteBuf) {
