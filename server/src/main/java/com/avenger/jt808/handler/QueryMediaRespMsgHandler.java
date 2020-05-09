@@ -28,8 +28,6 @@ public class QueryMediaRespMsgHandler implements MessageHandler {
     public Publisher<Message> process(Message message) {
         return Mono.justOrEmpty(message)
                 .filter(m -> m.getMsgBody() instanceof QueryMediaRespMsg)
-                .doOnSuccess(m -> {
-                    ApplicationContextUtils.publish(new MessageRecordService.MessageRecordEvent(m));
-                });
+                .doOnSuccess(m -> ApplicationContextUtils.publish(new MessageRecordService.RespMessageRecordEvent(m)));
     }
 }

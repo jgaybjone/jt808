@@ -3,6 +3,8 @@ package com.avenger.jt808.handler;
 import com.avenger.jt808.base.pbody.CommonMsg;
 import com.avenger.jt808.domain.Header;
 import com.avenger.jt808.domain.Message;
+import com.avenger.jt808.service.MessageRecordService;
+import com.avenger.jt808.util.ApplicationContextUtils;
 import com.avenger.jt808.util.JsonUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -51,6 +53,7 @@ public class CommonMsgHandler implements MessageHandler {
                         default:
                             break;
                     }
+                    ApplicationContextUtils.publish(new MessageRecordService.RespMessageRecordEvent(m));
                     return Mono.<Message>empty();
                 }).orElse(Mono.empty());
 

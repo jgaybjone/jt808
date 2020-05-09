@@ -3,8 +3,6 @@ package com.avenger.jt808.server;
 import com.avenger.jt808.domain.Header;
 import com.avenger.jt808.domain.Message;
 import com.avenger.jt808.domain.WritingMessageType;
-import com.avenger.jt808.domain.entity.MessageRecord;
-import com.avenger.jt808.enums.MessageFlow;
 import com.avenger.jt808.enums.MessageRecordStatus;
 import com.avenger.jt808.service.MessageRecordService;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -54,15 +52,8 @@ public class MessageEncoder extends MessageToByteEncoder<Message> {
         final WritingMessageType type = msg.getMsgBody().getClass().getAnnotation(WritingMessageType.class);
         header.setId(type.type());
         if (type.needReply()) {
-            messageRecordService.saveEntity(MessageRecord
-                    .builder()
-                    .messageType((int) header.getId())
-                    .serialNo(((int) header.getSerialNo()))
-                    .simNo(header.getSimNo())
-                    .flowTo(MessageFlow.SEND)
-                    .status(MessageRecordStatus.NOT_RESPONDING)
-                    .detail(writeAsString(msg))
-                    .build());
+            messageRecordService
+                    .crudAndConsumer(rep -> rep.updateStatusBySerialNoAndSimNo(MessageRecordStatus.NOT_RESPONDING, header.getSimNo(), (int) header.getSerialNo(), (int) header.getId()));
         }
         final byte[] b = msg.getMsgBody().serialize();
         buffer.writeBytes(header.getRaw((byte) b.length));
@@ -106,4 +97,11 @@ public class MessageEncoder extends MessageToByteEncoder<Message> {
             log.debug("out bytes: {}", stringBuilder.toString().replaceAll("ffffff", ""));
         }
     }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        super.exceptionCaught(ctx, cause);
+        log.error("消息编码异常", cause);
+    }
+
 }

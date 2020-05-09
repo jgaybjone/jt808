@@ -8,7 +8,7 @@ import lombok.Data;
 
 /**
  * Created by jg.wang on 2020/4/10.
- * Description:
+ * Description: 需要人工确认的报警
  */
 @Data
 @AdditionalAble(type = 0x04)

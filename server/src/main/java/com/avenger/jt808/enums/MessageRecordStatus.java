@@ -6,5 +6,6 @@ package com.avenger.jt808.enums;
  */
 public enum MessageRecordStatus {
     NOT_RESPONDING,
-    RESPONDED
+    RESPONDED,
+    NEW;
 }

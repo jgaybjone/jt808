@@ -14,9 +14,11 @@ public interface MessageRecordService extends BaseService<MessageRecord, Long, M
 
     Flux<?> sendCheck(String simNo, short serialNo);
 
-    void responseMessage(MessageRecordEvent messageRecordEvent);
+    void responseMessage(RespMessageRecordEvent respMessageRecordEvent);
 
-    class MessageRecordEvent extends ApplicationEvent {
+    void newMessage(NewMessageRecordEvent respMessageRecordEvent);
+
+    class RespMessageRecordEvent extends ApplicationEvent {
 
         /**
          * Create a new {@code ApplicationEvent}.
@@ -24,7 +26,20 @@ public interface MessageRecordService extends BaseService<MessageRecord, Long, M
          * @param source the object on which the event initially occurred or with
          *               which the event is associated (never {@code null})
          */
-        public MessageRecordEvent(Message source) {
+        public RespMessageRecordEvent(Message source) {
+            super(source);
+        }
+    }
+
+    class NewMessageRecordEvent extends ApplicationEvent {
+
+        /**
+         * Create a new {@code ApplicationEvent}.
+         *
+         * @param source the object on which the event initially occurred or with
+         *               which the event is associated (never {@code null})
+         */
+        public NewMessageRecordEvent(Message source) {
             super(source);
         }
     }

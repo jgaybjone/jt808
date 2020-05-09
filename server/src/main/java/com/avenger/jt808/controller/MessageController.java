@@ -1,5 +1,6 @@
 package com.avenger.jt808.controller;
 
+import com.avenger.jt808.base.tbody.PushMsg;
 import com.avenger.jt808.base.tbody.QueryMediaDataMsg;
 import com.avenger.jt808.base.tbody.ShootAtOnceMsg;
 import com.avenger.jt808.domain.Body;
@@ -51,6 +52,12 @@ public class MessageController {
     @PostMapping(value = "media_scan", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     @ApiOperation(value = "多媒体数据查询")
     public Flux<?> scanMediaFile(@RequestBody SendMsg<QueryMediaDataMsg> sendMsg) {
+        return sendCheck(sendMsg);
+    }
+
+    @PostMapping(value = "txt_message", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @ApiOperation(value = "多媒体数据查询")
+    public Flux<?> textMessage(@RequestBody SendMsg<PushMsg> sendMsg) {
         return sendCheck(sendMsg);
     }
 

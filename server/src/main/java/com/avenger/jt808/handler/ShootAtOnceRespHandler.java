@@ -42,7 +42,7 @@ public class ShootAtOnceRespHandler implements MessageHandler {
 //                            final Header h = m.getHeader();
 //                            final ShootAtOnceRespMsg b = (ShootAtOnceRespMsg) m.getMsgBody();
 //                            final short respSerialNo = b.getRespSerialNo();
-                            final MessageRecordService.MessageRecordEvent event = new MessageRecordService.MessageRecordEvent(m);
+                            final MessageRecordService.RespMessageRecordEvent event = new MessageRecordService.RespMessageRecordEvent(m);
                             messageRecordService.responseMessage(event);
 //                            messageRecordService.crudAndConsumer(repo -> {
 //                                repo.findOne((Specification<MessageRecord>) (root, query, criteriaBuilder) -> {

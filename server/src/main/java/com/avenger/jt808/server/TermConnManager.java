@@ -1,6 +1,8 @@
 package com.avenger.jt808.server;
 
 import com.avenger.jt808.domain.Message;
+import com.avenger.jt808.service.MessageRecordService;
+import com.avenger.jt808.util.ApplicationContextUtils;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.util.AttributeKey;
@@ -29,6 +31,7 @@ public class TermConnManager {
     }
 
     public static ChannelFuture sendMessage(Message message, Consumer<Future<? super Void>> consumer) {
+        ApplicationContextUtils.publish(new MessageRecordService.NewMessageRecordEvent(message));
         final String simNo = message.getHeader().getSimNo();
         final Channel channel = CHANNEL_HOLDER.get(simNo);
         if (channel == null) {
