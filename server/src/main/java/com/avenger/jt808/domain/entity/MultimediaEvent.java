@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
 
@@ -24,6 +25,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "multimedia_event", schema = "public", catalog = "postgres")
+@DynamicInsert
 public class MultimediaEvent implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
