@@ -64,4 +64,6 @@ public class CircularArea implements Serializable {
     private Integer overspeedDuration;
     @Column(name = "created_at", nullable = true)
     private Timestamp createdAt;
+    @Column(name = "company_id", length = 40)
+    private String companyId;
 }

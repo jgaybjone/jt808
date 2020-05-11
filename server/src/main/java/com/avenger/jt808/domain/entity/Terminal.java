@@ -29,25 +29,27 @@ public class Terminal implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "snowflake-id")
     @GenericGenerator(name = "snowflake-id", strategy = "com.avenger.jt808.util.SnowflakeIdGen")
     private Long id;
-    @Column(name = "province", nullable = true)
+    @Column(name = "province")
     private Short province;
-    @Column(name = "city", nullable = true)
+    @Column(name = "city")
     private Short city;
-    @Column(name = "manufacturer_code", nullable = true, length = 5)
+    @Column(name = "manufacturer_code", length = 5)
     private String manufacturerCode;
-    @Column(name = "model", nullable = true, length = 20)
+    @Column(name = "model", length = 20)
     private String model;
     @Column(name = "term_id", nullable = false, length = 7)
     private String termId;
-    @Column(name = "color", nullable = true)
+    @Column(name = "color")
     private Short color;
-    @Column(name = "vehicle_ident", nullable = true, length = 50)
+    @Column(name = "vehicle_ident", length = 50)
     private String vehicleIdent;
-    @Column(name = "auth_code", nullable = true, length = 50)
+    @Column(name = "auth_code", length = 50)
     private String authCode;
     @Column(name = "sim_no")
     private String simNo;
     @Column(name = "created_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
     @Generated(GenerationTime.INSERT)
     private Timestamp createdAt;
+    @Column(name = "company_id", length = 40)
+    private String companyId;
 }
