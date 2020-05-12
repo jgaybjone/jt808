@@ -14,7 +14,7 @@ import java.util.List;
  * Created by jg.wang on 2020/4/11.
  * Description:
  */
-@WritingMessageType(type = (0x8603 - 0x10000))
+@WritingMessageType(type = ((short) 0x8603))
 @Data
 public class DeleteRectangularRegionMsg implements Body {
 
