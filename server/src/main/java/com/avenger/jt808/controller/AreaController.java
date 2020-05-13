@@ -93,11 +93,11 @@ public class AreaController {
                     }).collect(Collectors.toList());
                     final Header header = new Header(set.getSimNo(), false, EncryptionForm.NOTHING);
                     final Message message = new Message();
-                    if (CollectionUtils.isEmpty(circularRegions)) {
-                        final CircularRegionSettingMsg circularRegionSettingMsg = new CircularRegionSettingMsg();
+                    message.setHeader(header);
+                    final CircularRegionSettingMsg circularRegionSettingMsg = new CircularRegionSettingMsg();
+                    if (!CollectionUtils.isEmpty(circularRegions)) {
                         circularRegionSettingMsg.setCircularRegions(circularRegions);
                         circularRegionSettingMsg.setType(RegionSettingType.ADD);
-                        message.setHeader(header);
                         message.setMsgBody(circularRegionSettingMsg);
                     } else {
                         final DeleteCircularRegionMsg deleteCircularRegionMsg = new DeleteCircularRegionMsg();
@@ -126,11 +126,11 @@ public class AreaController {
                     }).collect(Collectors.toList());
                     final Header header = new Header(set.getSimNo(), false, EncryptionForm.NOTHING);
                     final Message message = new Message();
-                    if (CollectionUtils.isEmpty(rectangularRegions)) {
+                    message.setHeader(header);
+                    if (!CollectionUtils.isEmpty(rectangularRegions)) {
                         final RectangularRegionSettingMsg rectangularRegionSettingMsg = new RectangularRegionSettingMsg();
                         rectangularRegionSettingMsg.setRectangularRegions(rectangularRegions);
                         rectangularRegionSettingMsg.setType(RegionSettingType.ADD);
-                        message.setHeader(header);
                         message.setMsgBody(rectangularRegionSettingMsg);
                     } else {
                         final DeleteRectangularRegionMsg deleteCircularRegionMsg = new DeleteRectangularRegionMsg();
@@ -147,7 +147,7 @@ public class AreaController {
         private List<T> circularAreas = Lists.newArrayList();
     }
 
-    @PostMapping("/terminal/rect")
+    @PostMapping("/terminal/polygonal")
     @ApiOperation(value = "多边形区域下发到终端")
     public Mono<?> setPolygonalArea(@RequestBody @Validated SetPolygonal req) {
         return Mono.justOrEmpty(req).doOnNext(r -> {

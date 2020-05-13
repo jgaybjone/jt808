@@ -18,7 +18,7 @@ import java.util.List;
  * Description: 设置多边形区域消息
  */
 @EqualsAndHashCode(callSuper = true)
-@WritingMessageType(type = ((short) 0x8604))
+@WritingMessageType(type = ((short) 0x8604), needReply = true)
 @Data
 public class PolygonalRegionSettingMsg extends RegionCommon implements Body {
 

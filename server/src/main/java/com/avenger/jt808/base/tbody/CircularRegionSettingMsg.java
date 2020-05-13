@@ -13,12 +13,13 @@ import lombok.EqualsAndHashCode;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by jg.wang on 2020/4/11.
  * Description:
  */
-@WritingMessageType(type = ((short) 0x8600))
+@WritingMessageType(type = ((short) 0x8600), needReply = true)
 @Data
 public class CircularRegionSettingMsg implements Body {
 
@@ -42,11 +43,18 @@ public class CircularRegionSettingMsg implements Body {
                     .writeShort(circularRegion.getType())
                     .writeInt(circularRegion.getCenterLatitude())
                     .writeInt(circularRegion.getCenterLongitude())
-                    .writeInt(circularRegion.getRadius())
-                    .writeBytes(ByteArrayUtils.bcdStrToBytes(DateUtil.toStringByFormat(circularRegion.getStartTime(), "yy-MM-dd-HH-mm-ss")))
-                    .writeBytes(ByteArrayUtils.bcdStrToBytes(DateUtil.toStringByFormat(circularRegion.getEndTime(), "yy-MM-dd-HH-mm-ss")))
-                    .writeShort(circularRegion.getSpeedLimit())
-                    .writeByte(circularRegion.getOverSpeedDuration());
+                    .writeInt(circularRegion.getRadius());
+            if (circularRegion.isTimeType()) {
+                Optional.ofNullable(circularRegion.getStartTime())
+                        .ifPresent(t -> byteBuf.writeBytes(ByteArrayUtils.bcdStrToBytes(DateUtil.toStringByFormat(t, "yyMMddHHmmss"))));
+                Optional.ofNullable(circularRegion.getEndTime())
+                        .ifPresent(t -> byteBuf.writeBytes(ByteArrayUtils.bcdStrToBytes(DateUtil.toStringByFormat(t, "yyMMddHHmmss"))));
+            }
+
+            if (circularRegion.isSpeedType()) {
+                byteBuf.writeShort(circularRegion.getSpeedLimit())
+                        .writeByte(circularRegion.getOverSpeedDuration());
+            }
 
         });
         return ByteBufUtils.array(byteBuf);

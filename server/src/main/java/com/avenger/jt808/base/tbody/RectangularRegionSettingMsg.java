@@ -18,7 +18,7 @@ import java.util.List;
  * Created by jg.wang on 2020/4/11.
  * Description:
  */
-@WritingMessageType(type = ((short) 0x8602))
+@WritingMessageType(type = ((short) 0x8602), needReply = true)
 @Data
 public class RectangularRegionSettingMsg implements Body {
 

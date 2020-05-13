@@ -137,17 +137,22 @@ public class MessageRecordServiceImpl implements MessageRecordService {
         final Message source = (Message) respMessageRecordEvent.getSource();
         final Header h = source.getHeader();
         final WritingMessageType annotation = source.getMsgBody().getClass().getAnnotation(WritingMessageType.class);
-        final MessageRecord messageRecord = MessageRecord
-                .builder()
-                .flowTo(MessageFlow.SEND)
-                .serialNo((int) h.getSerialNo())
-                .simNo(h.getSimNo())
-                .messageType((int) h.getId())
-                .status(MessageRecordStatus.NEW)
-                .detail(MessageEncoder.writeAsString(source))
-                .build();
-        Optional.ofNullable(annotation).ifPresent(a -> messageRecord.setMessageType((int) a.type()));
-        messageRecordRepository.save(messageRecord);
+        Optional.ofNullable(annotation).ifPresent(a -> {
+            if (!a.needReply()) {
+                return;
+            }
+            final MessageRecord messageRecord = MessageRecord
+                    .builder()
+                    .flowTo(MessageFlow.SEND)
+                    .serialNo((int) h.getSerialNo())
+                    .simNo(h.getSimNo())
+                    .messageType((int) h.getId())
+                    .status(MessageRecordStatus.NEW)
+                    .detail(MessageEncoder.writeAsString(source))
+                    .build();
+            messageRecord.setMessageType((int) a.type());
+            messageRecordRepository.save(messageRecord);
+        });
     }
 
 

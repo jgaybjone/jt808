@@ -100,8 +100,8 @@ public class MessageEncoder extends MessageToByteEncoder<Message> {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        super.exceptionCaught(ctx, cause);
         log.error("消息编码异常", cause);
+        super.exceptionCaught(ctx, cause);
     }
 
 }

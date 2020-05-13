@@ -48,8 +48,16 @@ public class RegionCommon {
         type = (short) (type | 0b1);
     }
 
+    public boolean isTimeType(){
+        return (type & 0b1) > 0;
+    }
+
     public void speedType() {
         type = (short) (type | 0b10);
+    }
+
+    public boolean isSpeedType() {
+        return (type & 0b10) > 0;
     }
 
     public void alarmTheDriverWhenEnteringTheArea() {
