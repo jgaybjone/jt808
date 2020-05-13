@@ -35,8 +35,8 @@ public class QueryResourceListMsg implements Body {
     public byte[] serialize() throws UnsupportedEncodingException {
         return ByteBufUtils.array(Unpooled.buffer(24)
                 .writeByte(channelId)
-                .writeBytes(ByteArrayUtils.bcdStrToBytes(LocalDateTimeUtils.formatTime(startAt, "yy-MM-dd-HH-mm-ss")))
-                .writeBytes(ByteArrayUtils.bcdStrToBytes(LocalDateTimeUtils.formatTime(endAt, "yy-MM-dd-HH-mm-ss")))
+                .writeBytes(ByteArrayUtils.bcdStrToBytes(LocalDateTimeUtils.formatTime(startAt, "yyMMddHHmmss")))
+                .writeBytes(ByteArrayUtils.bcdStrToBytes(LocalDateTimeUtils.formatTime(endAt, "yyMMddHHmmss")))
                 .writeInt(alarmDetail)
                 .writeInt(alarmExt)
                 .writeByte(resourceType.ordinal())

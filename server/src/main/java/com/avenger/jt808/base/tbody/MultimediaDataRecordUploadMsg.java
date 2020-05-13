@@ -21,7 +21,7 @@ import java.time.format.DateTimeFormatter;
 @Data
 public class MultimediaDataRecordUploadMsg implements Body {
 
-    private static final DateTimeFormatter DF = DateTimeFormatter.ofPattern("yy-MM-dd-HH-mm-ss");
+    private static final DateTimeFormatter DF = DateTimeFormatter.ofPattern("yyMMddHHmmss");
 
     /**
      * 多媒体类型

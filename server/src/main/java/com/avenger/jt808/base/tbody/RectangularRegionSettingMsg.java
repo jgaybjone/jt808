@@ -44,8 +44,8 @@ public class RectangularRegionSettingMsg implements Body {
                 .writeInt(circularRegion.getLongitudeOfUpperLeftPoint())
                 .writeInt(circularRegion.getLatitudeOfUpperRightPoint())
                 .writeInt(circularRegion.getLongitudeOfUpperRightPoint())
-                .writeBytes(ByteArrayUtils.bcdStrToBytes(DateUtil.toStringByFormat(circularRegion.getStartTime(), "yy-MM-dd-HH-mm-ss")))
-                .writeBytes(ByteArrayUtils.bcdStrToBytes(DateUtil.toStringByFormat(circularRegion.getEndTime(), "yy-MM-dd-HH-mm-ss")))
+                .writeBytes(ByteArrayUtils.bcdStrToBytes(DateUtil.toStringByFormat(circularRegion.getStartTime(), "yyMMddHHmmss")))
+                .writeBytes(ByteArrayUtils.bcdStrToBytes(DateUtil.toStringByFormat(circularRegion.getEndTime(), "yyMMddHHmmss")))
                 .writeShort(circularRegion.getSpeedLimit())
                 .writeByte(circularRegion.getOverSpeedDuration()));
         return ByteBufUtils.array(byteBuf);

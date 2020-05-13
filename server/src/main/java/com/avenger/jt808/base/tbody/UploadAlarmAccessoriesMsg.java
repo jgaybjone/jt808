@@ -48,7 +48,7 @@ public class UploadAlarmAccessoriesMsg implements Body {
                 .writeShort(tcpPort)
                 .writeShort(udpPort)
                 .writeBytes(alarmIdentification.getTerminalId().getBytes(Charset.forName("GBK")))
-                .writeBytes(ByteArrayUtils.bcdStrToBytes(LocalDateTimeUtils.formatTime(date, "yy-MM-dd-HH-mm-ss")))
+                .writeBytes(ByteArrayUtils.bcdStrToBytes(LocalDateTimeUtils.formatTime(date, "yyMMddHHmmss")))
                 .writeByte(alarmIdentification.getSerialNumber())
                 .writeByte(alarmIdentification.getNumberOfAttachments())
                 .writeByte(alarmIdentification.getReserve())

@@ -35,7 +35,7 @@ public class VideoRelayControlMsg implements Body {
                 .writeByte(channelId)
                 .writeByte(relayControl.ordinal())
                 .writeByte(multiple)
-                .writeBytes(ByteArrayUtils.bcdStrToBytes(LocalDateTimeUtils.formatTime(time, "yy-MM-dd-HH-mm-ss"))));
+                .writeBytes(ByteArrayUtils.bcdStrToBytes(LocalDateTimeUtils.formatTime(time, "yyMMddHHmmss"))));
     }
 
     @Override

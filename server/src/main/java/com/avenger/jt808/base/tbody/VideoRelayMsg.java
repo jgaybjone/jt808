@@ -57,8 +57,8 @@ public class VideoRelayMsg implements Body {
                 .writeByte(memType.ordinal())
                 .writeByte(relayType.ordinal())
                 .writeByte(forwardMultiple)
-                .writeBytes(ByteArrayUtils.bcdStrToBytes(LocalDateTimeUtils.formatTime(startAt, "yy-MM-dd-HH-mm-ss")))
-                .writeBytes(ByteArrayUtils.bcdStrToBytes(LocalDateTimeUtils.formatTime(endAt, "yy-MM-dd-HH-mm-ss"))));
+                .writeBytes(ByteArrayUtils.bcdStrToBytes(LocalDateTimeUtils.formatTime(startAt, "yyMMddHHmmss")))
+                .writeBytes(ByteArrayUtils.bcdStrToBytes(LocalDateTimeUtils.formatTime(endAt, "yyMMddHHmmss"))));
     }
 
     @Override
